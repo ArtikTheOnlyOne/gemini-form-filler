@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+
+    <div class="gff-popup">
+
+        <div class="gff-key-row">
+            <input type="password" id="gff-api-key" class="gff-input gff-key-input" placeholder="Gemini API key"
+                autocomplete="off" spellcheck="false">
+        </div>
+
+        <div id="gff-model-row" class="gff-model-row">
+
+            <p id="gff-status-text" class="gff-status-text"></p>
+
+
+            <select id="gff-model-select" class="gff-select gff-model-select" hidden></select>
+        </div>
+
+        <div class="gff-btn-row">
+            <button id="gff-load-btn" class="gff-btn gff-load-btn" type="button">
+                Load models
+            </button>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

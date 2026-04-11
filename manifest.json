@@ -50,6 +50,7 @@
         "128": "icons/gff128.png"
     },
     "action": {
+        "default_popup": "popup/popup.html",
         "default_icon": {
             "16": "icons/gff16.png",
             "32": "icons/gff32.png",
