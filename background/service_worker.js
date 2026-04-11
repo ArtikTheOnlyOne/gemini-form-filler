@@ -1,6 +1,6 @@
 const DEFAULT_CONFIG = {
-    apiKey: 'KEY',
-    model: 'gemini-3.1-flash-lite-preview',
+    apiKey: null,
+    model: null,
 };
 
 const MAX_RETRIES = 3;
@@ -168,9 +168,40 @@ async function solveQuestion(question) {
     return { success: false, error: lastError?.message ?? 'Unknown error' };
 }
 
+async function fetchAvailableModels(apiKey) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        const message = err?.error?.message ?? response.statusText;
+        throw Object.assign(new Error(message), { status: response.status });
+    }
+
+    const data = await response.json();
+
+    const models = (data.models ?? [])
+        .filter(m =>
+            m.supportedGenerationMethods?.includes('generateContent') &&
+            !m.name.includes('embedding') &&
+            !m.name.includes('aqa')
+        )
+        .map(m => m.name.replace('models/', ''));
+
+    return models;
+}
+
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (message.type === 'SOLVE_QUESTION') {
         solveQuestion(message.question).then(sendResponse);
+        return true;
+    }
+
+    if (message.type === 'FETCH_MODELS') {
+        fetchAvailableModels(message.apiKey)
+            .then(models => sendResponse({ success: true, models }))
+            .catch(err => sendResponse({ success: false, error: `${err.message} (${err.status ?? 'network error'})` }));
         return true;
     }
 });

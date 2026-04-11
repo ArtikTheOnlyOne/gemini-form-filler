@@ -495,6 +495,12 @@
         btn.setAttribute('type', 'button');
 
         btn.addEventListener('click', async () => {
+            const { config } = await chrome.storage.local.get('config');
+            if (!config?.apiKey || !config?.model) {
+                alert('Gemini Form Filler is not configured.\n\nPlease open the extension popup, enter your API key and select a model.');
+                return;
+            }
+
             btn.disabled = true;
             btn.textContent = 'Solving…';
 
