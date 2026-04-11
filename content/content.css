@@ -32,3 +32,17 @@
     outline: 3px solid rgba(103, 58, 183, 0.5);
     outline-offset: 2px;
 }
+
+.z12JJ {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gff-state-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-left: auto;
+    display: block;
+}

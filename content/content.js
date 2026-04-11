@@ -74,6 +74,51 @@
         return { rows, columns };
     }
 
+    function injectStateIcon(questionEl, state) {
+        const z12JJ = questionEl.querySelector('.z12JJ');
+        if (!z12JJ) return;
+
+        if (z12JJ.querySelector('.gff-state-icon')) return;
+
+        const img = document.createElement('img');
+        img.className = 'gff-state-icon';
+        img.src = ICONS[state];
+        img.alt = state;
+        
+        switch (state){
+            case 'pending':
+                img.title = 'Pending';
+                break;
+            case 'solving':
+                img.title = 'Solving...';
+                break;
+            case 'success':
+                img.title = 'Solved successfully';
+                break;
+            case 'failure':
+                img.title = 'Failed to solve';
+                break;
+            case 'skipped':
+                img.title = 'Skipped';
+                break;
+        }
+
+        img.dataset.gffState = state;
+
+        z12JJ.appendChild(img);
+    }
+
+    function setStateIcon(questionEl, state) {
+        const icon = questionEl.querySelector('.gff-state-icon');
+        if (!icon) {
+            injectStateIcon(questionEl, state);
+            return;
+        }
+        icon.src = ICONS[state];
+        icon.alt = state;
+        icon.dataset.gffState = state;
+    }
+
     function parseQuestions() {
         const items = document.querySelectorAll('.o3Dpx .Qr7Oae');
         if (!items.length) return [];
@@ -95,13 +140,17 @@
             } catch { /* skip */ }
 
             if (typeCode === null) continue;
-            if (typeCode === 13) continue;
 
             let type = QUESTION_TYPES[typeCode] ?? `unknown_${typeCode}`;
             if (type === 'grid') type = isCheckboxGrid ? 'checkbox_grid' : 'radio_grid';
 
             const titleEl = component.querySelector('.M7eMe');
             const title = titleEl ? titleEl.textContent.trim() : '';
+
+            if (type === 'file_upload') {
+                injectStateIcon(item, 'skipped');
+                continue;
+            }
 
             let options = null;
 
@@ -129,7 +178,8 @@
                     break;
             }
 
-            questions.push({ title, type, options });
+            injectStateIcon(item, 'pending');
+            questions.push({ title, type, options, element: item });
         }
 
         return questions;
