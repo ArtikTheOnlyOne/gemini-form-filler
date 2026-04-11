@@ -4,7 +4,7 @@
     "short_name": "Auto-Forms",
     "version": "1.3.3.7",
     "description": "An extension that automatically fills Google Forms using Google Gemini",
-	"homepage_url": "https://github.com/ArtikTheOnlyOne/auto-forms",
+    "homepage_url": "https://github.com/ArtikTheOnlyOne/auto-forms",
     "permissions": [
         "activeTab",
         "storage",
@@ -14,5 +14,19 @@
     "host_permissions": [
         "https://docs.google.com/forms/*",
         "https://generativelanguage.googleapis.com/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://docs.google.com/forms/*"
+            ],
+            "js": [
+                "content/content.js"
+            ],
+            "css": [
+                "content/content.css"
+            ],
+            "run_at": "document_idle"
+        }
     ]
 }
