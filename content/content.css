@@ -46,3 +46,42 @@
     margin-left: auto;
     display: block;
 }
+
+#gff-rate-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    background-color: #FFF8E1;
+    border: 1px solid #FFD54F;
+    border-radius: 4px;
+    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    font-size: 13px;
+    color: #5D4037;
+}
+
+#gff-retry-btn {
+    flex-shrink: 0;
+    padding: 5px 14px;
+    background: #FFC107;
+    color: #3E2723;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+#gff-retry-btn:disabled {
+    background: #FFE082;
+    color: #A1887F;
+    cursor: not-allowed;
+}
+
+#gff-retry-btn:not(:disabled):hover {
+    background: #FFB300;
+}

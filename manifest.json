@@ -15,6 +15,10 @@
         "https://docs.google.com/forms/*",
         "https://generativelanguage.googleapis.com/*"
     ],
+    "background": {
+        "service_worker": "background/service_worker.js",
+        "type": "module"
+    },
     "content_scripts": [
         {
             "matches": [
