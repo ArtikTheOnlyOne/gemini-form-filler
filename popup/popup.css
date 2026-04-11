@@ -1,0 +1,23 @@
+.gff-popup {}
+
+.gff-key-row {}
+
+.gff-input {}
+.gff-key-input {}
+
+.gff-model-row {}
+
+.gff-status-text {}
+
+.gff-status-text.is-loading {}
+.gff-status-text.is-error {}
+.gff-status-text.is-model-gone {}
+
+.gff-select {}
+.gff-model-select {}
+
+.gff-btn-row {}
+
+.gff-btn {}
+.gff-load-btn {}
+.gff-load-btn:disabled {}
