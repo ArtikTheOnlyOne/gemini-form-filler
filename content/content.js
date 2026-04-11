@@ -13,6 +13,14 @@
         18: 'rating',
     };
 
+    const ICONS = {
+        pending: chrome.runtime.getURL('states/pending.svg'),
+        solving: chrome.runtime.getURL('states/solving.svg'),
+        success: chrome.runtime.getURL('states/success.svg'),
+        failure: chrome.runtime.getURL('states/failure.svg'),
+        skipped: chrome.runtime.getURL('states/skipped.svg'),
+    };
+
     function parseMultipleChoice(el) {
         return [...el.querySelectorAll('[role="radio"][data-value]')]
             .map(r => r.getAttribute('data-value'))
