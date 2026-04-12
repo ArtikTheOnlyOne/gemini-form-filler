@@ -168,8 +168,17 @@ async function solveQuestion(question) {
     return { success: false, error: lastError?.message ?? 'Unknown error' };
 }
 
+const MODEL_EXCLUDE = [
+    'embedding',
+    'aqa',
+    'nano',
+    'vision',
+];
+
+const MIN_OUTPUT_TOKENS = 1024;
+
 async function fetchAvailableModels(apiKey) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}&pageSize=100`;
 
     const response = await fetch(url);
 
@@ -182,12 +191,35 @@ async function fetchAvailableModels(apiKey) {
     const data = await response.json();
 
     const models = (data.models ?? [])
-        .filter(m =>
-            m.supportedGenerationMethods?.includes('generateContent') &&
-            !m.name.includes('embedding') &&
-            !m.name.includes('aqa')
-        )
-        .map(m => m.name.replace('models/', ''));
+        .filter(m => {
+            const id = (m.name ?? '').toLowerCase();
+            const displayName = (m.displayName ?? '').toLowerCase();
+            const searchStr = id + ' ' + displayName;
+
+            if (!m.supportedGenerationMethods?.includes('generateContent')) return false;
+
+            if (MODEL_EXCLUDE.some(seg => searchStr.includes(seg))) return false;
+
+            if (!id.includes('gemini')) return false;
+
+            if ((m.outputTokenLimit ?? 0) < MIN_OUTPUT_TOKENS) return false;
+
+            return true;
+        })
+        .map(m => ({
+            id: m.name.replace('models/', ''),
+            displayName: m.displayName ?? m.name.replace('models/', ''),
+        }))
+
+        .sort((a, b) => {
+            const rank = id => {
+                if (id.includes('flash')) return 0;
+                if (id.includes('pro')) return 1;
+                if (id.includes('ultra')) return 2;
+                return 3;
+            };
+            return rank(a.id) - rank(b.id) || a.id.localeCompare(b.id);
+        });
 
     return models;
 }
