@@ -20,14 +20,15 @@ function showStatus(text, modifier = null) {
 function showModels(models, selectedModel = null) {
     modelSelect.innerHTML = '';
 
-    for (const id of models) {
+    for (const { id, displayName } of models) {
         const opt = document.createElement('option');
         opt.value = id;
-        opt.text = id;
+        opt.text = displayName;
         modelSelect.appendChild(opt);
     }
 
-    if (selectedModel && models.includes(selectedModel)) {
+    const ids = models.map(m => m.id);
+    if (selectedModel && ids.includes(selectedModel)) {
         modelSelect.value = selectedModel;
     }
 
@@ -75,7 +76,9 @@ async function loadModels(apiKey, savedModel = null) {
         return;
     }
 
-    if (savedModel && !models.includes(savedModel)) {
+    const ids = models.map(m => m.id);
+
+    if (savedModel && !ids.includes(savedModel)) {
         await saveConfig({ model: null });
         showStatus(STATUS.MODEL_GONE, 'is-model-gone');
 
@@ -85,7 +88,8 @@ async function loadModels(apiKey, savedModel = null) {
 
     showModels(models, savedModel);
 
-    if (savedModel && models.includes(savedModel)) {
+
+    if (savedModel && ids.includes(savedModel)) {
         await saveConfig({ model: savedModel });
     }
 }
@@ -93,7 +97,6 @@ async function loadModels(apiKey, savedModel = null) {
 modelSelect.addEventListener('change', async () => {
     await saveConfig({ model: modelSelect.value });
 });
-
 
 loadBtn.addEventListener('click', async () => {
     const apiKey = apiKeyInput.value.trim();
