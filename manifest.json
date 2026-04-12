@@ -41,6 +41,14 @@
             "matches": [
                 "https://docs.google.com/*"
             ]
+        },
+        {
+            "resources": [
+                "content/content.css"
+            ],
+            "matches": [
+                "https://docs.google.com/*"
+            ]
         }
     ],
     "icons": {

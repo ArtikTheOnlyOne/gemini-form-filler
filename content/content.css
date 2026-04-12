@@ -85,3 +85,56 @@
 #gff-retry-btn:not(:disabled):hover {
     background: #FFB300;
 }
+
+@keyframes gff-slide-in {
+    from {
+        transform: translateX(calc(100% + 24px));
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+@keyframes gff-slide-out {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(calc(100% + 24px));
+        opacity: 0;
+    }
+}
+
+.gff-toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 2147483647;
+
+    transform: translateX(calc(100% + 24px));
+    opacity: 0;
+}
+
+.gff-toast--visible {
+    animation: gff-slide-in 0.35s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+}
+
+.gff-toast--hiding {
+    animation: gff-slide-out 0.3s ease-in forwards;
+}
+
+.gff-toast {}
+
+.gff-toast-message {}
+
+.gff-toast-btn {}
+
+.gff-toast-btn:hover {}
+
+.gff-toast-btn:active {}

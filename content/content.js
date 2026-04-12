@@ -21,6 +21,70 @@
         skipped: chrome.runtime.getURL('states/skipped.svg'),
     };
 
+    isAlertVisible = false;
+
+    function gffAlert(message) {
+        if (isAlertVisible) return Promise.resolve();
+
+        return new Promise(resolve => {
+            const host = document.createElement('div');
+            host.id = 'gff-toast-host';
+            const shadow = host.attachShadow({ mode: 'open' });
+
+            const style = document.createElement('style');
+            style.textContent = `
+        @import url("${chrome.runtime.getURL('content/content.css')}");
+      `;
+
+            const toast = document.createElement('div');
+            toast.className = 'gff-toast';
+
+            const msg = document.createElement('p');
+            msg.className = 'gff-toast-message';
+            msg.textContent = message;
+
+            const btn = document.createElement('button');
+            btn.className = 'gff-toast-btn';
+            btn.type = 'button';
+            btn.textContent = 'OK';
+
+            const close = () => {
+                toast.classList.add('gff-toast--hiding');
+                toast.addEventListener('animationend', () => {
+                    host.remove();
+                    resolve();
+                }, { once: true });
+
+                isAlertVisible = false;
+            };
+
+            btn.addEventListener('click', close);
+            document.addEventListener('keydown', function onKey(e) {
+                if (e.key === 'Escape' || e.key === 'Enter') {
+                    document.removeEventListener('keydown', onKey);
+                    close();
+                }
+            });
+
+            shadow.appendChild(style);
+            toast.appendChild(msg);
+            toast.appendChild(btn);
+            shadow.appendChild(toast);
+            document.body.insertBefore(host, document.body.firstChild);
+
+            isAlertVisible = true;
+
+            toast.getBoundingClientRect();
+            toast.classList.add('gff-toast--visible');
+
+            setTimeout(() => {
+                if (isAlertVisible) {
+                    close();
+                }
+            }, 4000);
+        });
+    }
+
     function parseMultipleChoice(el) {
         return [...el.querySelectorAll('[role="radio"][data-value]')]
             .map(r => r.getAttribute('data-value'))
@@ -446,7 +510,7 @@
                 }
                 btn.textContent = 'Solve';
                 btn.disabled = false;
-                alert('Gemini API quota exhausted.\n\nYou have reached your daily or per-minute request limit. Please wait before trying again or check your API quota in Google AI Studio.');
+                await gffAlert('Gemini API quota exhausted.\n\nYou have reached your daily or per-minute request limit. Please wait before trying again or check your API quota in Google AI Studio.');
                 return;
             }
 
@@ -497,7 +561,7 @@
         btn.addEventListener('click', async () => {
             const { config } = await chrome.storage.local.get('config');
             if (!config?.apiKey || !config?.model) {
-                alert('Gemini Form Filler is not configured.\n\nPlease open the extension popup, enter your API key and select a model.');
+                await gffAlert('Gemini Form Filler is not configured.\n\nPlease open the extension popup, enter your API key and select a model.');
                 return;
             }
 
