@@ -10,6 +10,10 @@
 
     <div class="gff-popup">
 
+        <div class="gff-header">
+            <img src="../icons/gff128.png" alt="" class="gff-logo">
+        </div>
+
         <div class="gff-key-row">
             <input type="password" id="gff-api-key" class="gff-input gff-key-input" placeholder="Gemini API key"
                 autocomplete="off" spellcheck="false">
@@ -19,8 +23,9 @@
 
             <p id="gff-status-text" class="gff-status-text"></p>
 
-
-            <select id="gff-model-select" class="gff-select gff-model-select" hidden></select>
+            <div class="gff-select-wrapper">
+                <select id="gff-model-select" class="gff-select gff-model-select" hidden></select>
+            </div>
         </div>
 
         <div class="gff-btn-row">
