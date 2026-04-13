@@ -98,7 +98,6 @@
     }
 }
 
-
 @keyframes gff-slide-out {
     from {
         transform: translateX(0);
@@ -129,12 +128,89 @@
     animation: gff-slide-out 0.3s ease-in forwards;
 }
 
-.gff-toast {}
+.gff-toast {
+    position: fixed;
+    top: 28px;
+    right: 28px;
+    z-index: 2147483647;
 
-.gff-toast-message {}
+    display: flex;
+    align-items: center;
+    gap: 16px;
 
-.gff-toast-btn {}
+    background: #ffffff;
+    border: 1px solid #ede8f5;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(123, 77, 192, 0.10);
 
-.gff-toast-btn:hover {}
+    padding: 14px 18px 14px 20px;
+    max-width: 360px;
+    min-width: 220px;
 
-.gff-toast-btn:active {}
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.gff-toast--visible {
+    animation: gff-toast-in 0.25s ease forwards;
+}
+
+.gff-toast--hiding {
+    animation: gff-toast-out 0.22s ease forwards;
+}
+
+@keyframes gff-toast-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gff-toast-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+.gff-toast-message {
+    flex: 1;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #2a2a2a;
+    margin: 0;
+}
+
+.gff-toast-btn {
+    flex-shrink: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    background: #7B4DC0;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 18px;
+    cursor: pointer;
+    transition: background 0.18s ease;
+    white-space: nowrap;
+}
+
+.gff-toast-btn:hover {
+    background: #6B3DB0;
+}
+
+.gff-toast-btn:active {
+    background: #5C2E9F;
+}
