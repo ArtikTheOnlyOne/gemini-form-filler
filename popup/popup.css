@@ -1,23 +1,200 @@
-.gff-popup {}
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-.gff-key-row {}
+body {
+    width: 320px;
+    min-width: 320px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #ffffff;
+    overflow: hidden;
+}
 
-.gff-input {}
-.gff-key-input {}
+.gff-popup {
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    background: #ffffff;
+}
 
-.gff-model-row {}
+.gff-header {
+    background: #7B4DC0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 18px 0 22px;
+}
 
-.gff-status-text {}
+.gff-logo {
+  width: 36px;
+  height: 36px;
+  mix-blend-mode: screen;
+  filter: brightness(1.2);
+}
 
-.gff-status-text.is-loading {}
-.gff-status-text.is-error {}
-.gff-status-text.is-model-gone {}
+.gff-key-row {
+    padding: 18px 20px 4px 20px;
+}
 
-.gff-select {}
-.gff-model-select {}
+.gff-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ede8f5;
+    outline: none;
+    font-size: 14px;
+    color: #1a1a1a;
+    padding: 8px 0 10px;
+    background: transparent;
+    transition: border-color 0.2s ease;
+}
 
-.gff-btn-row {}
+.gff-key-input {
+    font-family: 'Courier New', 'Courier', monospace;
+    letter-spacing: 2px;
+}
 
-.gff-btn {}
-.gff-load-btn {}
-.gff-load-btn:disabled {}
+.gff-key-input::placeholder {
+    color: #b8b0c8;
+    font-family: 'Courier New', 'Courier', monospace;
+    letter-spacing: 1px;
+}
+
+.gff-key-input:focus {
+    border-bottom-color: #c9b3e8;
+}
+
+.gff-model-row {
+    padding: 10px 20px 6px 20px;
+    min-height: 46px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.gff-status-text {
+    font-size: 12px;
+    color: #808080;
+    line-height: 1.55;
+    margin: 0;
+}
+
+.gff-status-text.is-loading {
+    color: #9b74d4;
+    font-style: italic;
+}
+
+.gff-status-text.is-error {
+    color: #c0392b;
+}
+
+.gff-status-text.is-model-gone {
+    color: #c06000;
+}
+
+.gff-select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.gff-select-wrapper:has(> .gff-model-select[hidden]) {
+    display: none;
+}
+
+.gff-select-wrapper::after {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #b09ad4;
+    transform: translateY(-50%) rotate(0deg);
+    transition: transform 0.22s ease;
+}
+
+.gff-select-wrapper:focus-within::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.gff-select {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    border-bottom: 1px solid #ede8f5;
+    border-radius: 0;
+    outline: none;
+    padding: 11px 28px 11px 0;
+    font-family: inherit;
+    font-size: 14px;
+    color: #1a1a1a;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.gff-select:focus {
+    border-bottom-color: #c9b3e8;
+}
+
+.gff-select option {
+    background-color: #ffffff;
+    color: #1a1a1a;
+    font-size: 13px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    padding: 14px 12px 14px 20px;
+    line-height: 2.2;
+}
+
+.gff-select option:hover {
+    background-color: #f0e9fc;
+    color: #3d1a70;
+}
+
+.gff-select option:checked {
+    background-color: #7B4DC0;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.gff-btn-row {
+    padding: 12px 20px 22px 20px;
+}
+
+.gff-btn {
+    cursor: pointer;
+    font-family: inherit;
+    border: none;
+}
+
+.gff-load-btn {
+    width: 100%;
+    background: #7B4DC0;
+    color: #ffffff;
+    padding: 13px 0;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 8px;
+    letter-spacing: 0.2px;
+    transition: background 0.18s ease, opacity 0.18s ease;
+}
+
+.gff-load-btn:hover {
+    background: #6B3DB0;
+}
+
+.gff-load-btn:active {
+    background: #5C2E9F;
+}
+
+.gff-load-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
