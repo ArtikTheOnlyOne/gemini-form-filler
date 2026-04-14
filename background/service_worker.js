@@ -11,11 +11,30 @@ async function getConfig() {
     return { ...DEFAULT_CONFIG, ...config };
 }
 
+async function fetchImageAsBase64(url) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Image fetch failed: ${response.status}`);
+
+    const buffer = await response.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
+    const mimeType = response.headers.get('content-type')?.split(';')[0] ?? 'image/jpeg';
+
+    let binary = '';
+    for (const byte of bytes) binary += String.fromCharCode(byte);
+    const base64 = btoa(binary);
+
+    return { base64, mimeType };
+}
+
 function buildPrompt(question) {
-    const { title, type, options } = question;
+    const { title, type, options, imageUrl } = question;
 
     const optionsBlock = options !== null
         ? `\nAvailable options:\n${JSON.stringify(options, null, 2)}`
+        : '';
+
+    const imageNote = question.imageUrl
+        ? '\nThe question contains an image provided below. Use it to answer.'
         : '';
 
     return `You are an assistant that answers Google Form questions with factual, objectively correct answers.
@@ -72,11 +91,18 @@ Type: ${type}
 Text: ${title}${optionsBlock}`;
 }
 
-async function callGemini(prompt, config) {
+async function callGemini(prompt, config, image = null) {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${config.model}:generateContent?key=${config.apiKey}`;
 
+    const parts = [];
+
+    if (image) {
+        parts.push({ inline_data: { mime_type: image.mimeType, data: image.base64 } });
+    }
+    parts.push({ text: prompt });
+
     const body = {
-        contents: [{ parts: [{ text: prompt }] }],
+        contents: [{ parts }],
         generationConfig: {
             temperature: 0,
             maxOutputTokens: 512,
@@ -136,7 +162,16 @@ async function solveQuestion(question) {
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
         try {
-            const result = await callGemini(prompt, config);
+            let image = null;
+            if (question.imageUrl) {
+                try {
+                    image = await fetchImageAsBase64(question.imageUrl);
+                } catch (err) {
+                    console.warn('[GFF] Could not fetch question image:', err.message);
+                }
+            }
+
+            const result = await callGemini(prompt, config, image);
 
             if (result?.answer === undefined) {
                 throw new Error('Response missing "answer" field');
@@ -210,7 +245,6 @@ async function fetchAvailableModels(apiKey) {
             id: m.name.replace('models/', ''),
             displayName: m.displayName ?? m.name.replace('models/', ''),
         }))
-
         .sort((a, b) => {
             const rank = id => {
                 if (id.includes('flash')) return 0;
