@@ -220,7 +220,11 @@
                 const match = raw.match(/^%\.@\.\[(\d+),"[^"]*",null,(\d+),/);
                 if (match) typeCode = parseInt(match[2], 10);
                 if (typeCode === 7) isCheckboxGrid = /,\[true\]/.test(raw);
-            } catch { injectStateIcon(item, 'failure'); }
+            }
+            catch {
+                injectStateIcon(item, 'failure');
+                continue;
+            }
 
             if (typeCode === null) continue;
 
@@ -238,34 +242,23 @@
             let options = null;
 
             switch (type) {
-                case 'multiple_choice':
-                    options = parseMultipleChoice(item);
-                    break;
-                case 'checkboxes':
-                    options = parseCheckboxes(item);
-                    break;
-                case 'dropdown':
-                    options = parseDropdown(item);
-                    break;
-                case 'linear_scale':
-                    options = parseLinearScale(item);
-                    break;
-                case 'rating':
-                    options = parseRating(item);
-                    break;
-                case 'radio_grid':
-                    options = parseGrid(item, false);
-                    break;
-                case 'checkbox_grid':
-                    options = parseGrid(item, true);
-                    break;
+                case 'multiple_choice': options = parseMultipleChoice(item); break;
+                case 'checkboxes': options = parseCheckboxes(item); break;
+                case 'dropdown': options = parseDropdown(item); break;
+                case 'linear_scale': options = parseLinearScale(item); break;
+                case 'rating': options = parseRating(item); break;
+                case 'radio_grid': options = parseGrid(item, false); break;
+                case 'checkbox_grid': options = parseGrid(item, true); break;
             }
 
             const existingState = item.querySelector('.gff-state-icon')?.dataset.gffState;
             if (existingState === 'success' || existingState === 'skipped') continue;
 
+            const imgEl = item.querySelector('.gCouxf img');
+            const imageUrl = imgEl?.src ?? null;
+
             injectStateIcon(item, 'pending');
-            questions.push({ title, type, options, element: item });
+            questions.push({ title, type, options, imageUrl, element: item });
         }
 
         return questions;
@@ -495,7 +488,12 @@
             try {
                 response = await safeSendMessage({
                     type: 'SOLVE_QUESTION',
-                    question: { title: question.title, type: question.type, options: question.options },
+                    question: {
+                        title: question.title,
+                        type: question.type,
+                        options: question.options,
+                        imageUrl: question.imageUrl ?? null,
+                    },
                 });
             } catch (err) {
                 setStateIcon(question.element, 'failure');
