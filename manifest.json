@@ -6,9 +6,7 @@
     "description": "An extension that automatically fills Google Forms using Google Gemini",
     "homepage_url": "https://github.com/ArtikTheOnlyOne/gemini-form-filler",
     "permissions": [
-        "activeTab",
-        "storage",
-        "scripting"
+        "storage"
     ],
     "host_permissions": [
         "https://docs.google.com/forms/*",
