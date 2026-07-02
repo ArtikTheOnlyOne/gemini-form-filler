@@ -1,6 +1,6 @@
 # Gemini Form Filler
 
-A browser extension for Chromium-based browsers (Chrome, Edge, Brave, Opera) that automatically fills Google Forms using the Google Gemini AI.
+A browser extension for Chromium-based browsers (Chrome, Edge, Opera) that automatically fills Google Forms using the Google Gemini AI.
 
 > **Disclaimer:** This extension uses an AI model to generate answers. AI makes mistakes — answers may be incorrect, incomplete, or inappropriate. Always review filled answers before submitting. The author takes no responsibility for the results of form submissions made using this extension.
 
@@ -8,9 +8,15 @@ A browser extension for Chromium-based browsers (Chrome, Edge, Brave, Opera) tha
 
 ## Installation
 
+<!-- The extension is available for download from:
+- [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/gemini-form-filler/jkbdobafeneimelhcjcamkhmpnlkdmha/)
+- [Chrome Web Store](https://chromewebstore.google.com/detail/gemini-form-filler/njegmkogepejmpdpobokahnaogepgdbi/)
+- [Opera add-ons](https://addons.opera.com/en/extensions/details/gemini-form-filler/)
+
+You can also use it unpacked: -->
 1. Download or clone this repository
 2. Open your browser and navigate to the extensions page:
-   - Chrome / Brave / Opera: `chrome://extensions`
+   - Chrome / Opera: `chrome://extensions`
    - Edge: `edge://extensions`
 3. Enable **Developer mode** (toggle in the top right corner)
 4. Click **Load unpacked** and select the repository folder
@@ -22,12 +28,14 @@ A browser extension for Chromium-based browsers (Chrome, Edge, Brave, Opera) tha
 
 Before using the extension, you need a Google Gemini API key.
 
-**Getting an API key:**
-1. Go to [Google AI Studio](https://aistudio.google.com)
+### Getting an API key
+
+1. Go to [Google AI Studio](https://aistudio.google.com/)
 2. Sign in with your Google account
 3. Click **Get API key** and create a new key
 
-**Configuring the extension:**
+### Configuring the extension
+
 1. Click the extension icon in the toolbar to open the popup
 2. Paste your API key into the input field
 3. Click **Load models**
