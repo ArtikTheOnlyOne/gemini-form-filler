@@ -15,26 +15,27 @@
 
     const ICONS = {
         pending: chrome.runtime.getURL('states/pending.svg'),
-        solving: chrome.runtime.getURL('states/solving.svg'),
+        processing: chrome.runtime.getURL('states/processing.svg'),
         success: chrome.runtime.getURL('states/success.svg'),
         failure: chrome.runtime.getURL('states/failure.svg'),
         skipped: chrome.runtime.getURL('states/skipped.svg'),
     };
 
-    isAlertVisible = false;
+    let isAlertVisible = false;
 
     function gffAlert(message) {
         if (isAlertVisible) return Promise.resolve();
 
-        return new Promise(resolve => {
+        return new Promise(async resolve => {
             const host = document.createElement('div');
             host.id = 'gff-toast-host';
             const shadow = host.attachShadow({ mode: 'open' });
 
-            const style = document.createElement('style');
-            style.textContent = `
-        @import url("${chrome.runtime.getURL('content/content.css')}");
-      `;
+            const cssText = await fetch(chrome.runtime.getURL("content/content.css"))
+                .then((r) => r.text())
+                .catch(() => "");
+            const style = document.createElement("style");
+            style.textContent = cssText;
 
             const toast = document.createElement('div');
             toast.className = 'gff-toast';
@@ -153,14 +154,14 @@
             case 'pending':
                 img.title = 'Pending';
                 break;
-            case 'solving':
-                img.title = 'Solving...';
+            case 'processing':
+                img.title = 'Processing...';
                 break;
             case 'success':
-                img.title = 'Solved successfully';
+                img.title = 'Processed successfully';
                 break;
             case 'failure':
-                img.title = 'Failed to solve';
+                img.title = 'Failed to process';
                 break;
             case 'skipped':
                 img.title = 'Skipped';
@@ -185,14 +186,14 @@
             case 'pending':
                 icon.title = 'Pending';
                 break;
-            case 'solving':
-                icon.title = 'Solving...';
+            case 'processing':
+                icon.title = 'Processing...';
                 break;
             case 'success':
-                icon.title = 'Solved successfully';
+                icon.title = 'Processed successfully';
                 break;
             case 'failure':
-                icon.title = 'Failed to solve';
+                icon.title = 'Failed to process';
                 break;
             case 'skipped':
                 icon.title = 'Skipped';
@@ -465,14 +466,14 @@
         });
     }
 
-    async function solveQuestions(questions) {
-        const btn = document.getElementById('gff-solve-btn');
+    async function processQuestions(questions) {
+        const btn = document.getElementById('gff-process-btn');
         for (let i = 0; i < questions.length; i++) {
             const question = questions[i];
 
             if (!isContextValid()) {
                 for (const q of questions) {
-                    if (q.element.querySelector('.gff-state-icon')?.dataset.gffState === 'solving') {
+                    if (q.element.querySelector('.gff-state-icon')?.dataset.gffState === 'processing') {
                         setStateIcon(q.element, 'failure');
                     }
                 }
@@ -482,12 +483,12 @@
                 return;
             }
 
-            setStateIcon(question.element, 'solving');
+            setStateIcon(question.element, 'processing');
 
             let response;
             try {
                 response = await safeSendMessage({
-                    type: 'SOLVE_QUESTION',
+                    type: 'PROCESS_QUESTION',
                     question: {
                         title: question.title,
                         type: question.type,
@@ -506,7 +507,7 @@
                 for (let j = i + 1; j < questions.length; j++) {
                     setStateIcon(questions[j].element, 'failure');
                 }
-                btn.textContent = 'Solve';
+                btn.textContent = 'Process';
                 btn.disabled = false;
                 await gffAlert('Gemini API quota exhausted.\n\nYou have reached your daily or per-minute request limit. Please wait before trying again or check your API quota in Google AI Studio.');
                 return;
@@ -524,7 +525,7 @@
                 });
 
                 btn.disabled = true;
-                btn.textContent = 'Solving…';
+                btn.textContent = 'Processing…';
                 i--;
                 continue;
             }
@@ -542,18 +543,18 @@
             }
 
             setStateIcon(question.element, 'success');
-            console.log(`[GFF] Solved: "${question.title}"`, response.answer);
+            console.log(`[GFF] Processed: "${question.title}"`, response.answer);
 
             fillAnswer(question, response.answer);
         }
     }
 
-    function injectSolveButton(container) {
-        if (document.getElementById('gff-solve-btn')) return;
+    function injectProcessButton(container) {
+        if (document.getElementById('gff-process-btn')) return;
 
         const btn = document.createElement('button');
-        btn.id = 'gff-solve-btn';
-        btn.textContent = 'Solve';
+        btn.id = 'gff-process-btn';
+        btn.textContent = 'Process';
         btn.setAttribute('type', 'button');
 
         btn.addEventListener('click', async () => {
@@ -564,14 +565,14 @@
             }
 
             btn.disabled = true;
-            btn.textContent = 'Solving…';
+            btn.textContent = 'Processing…';
 
             const questions = parseQuestions();
             console.log('[GFF] Starting, questions:', questions.length);
 
-            await solveQuestions(questions);
+            await processQuestions(questions);
 
-            btn.textContent = 'Solve';
+            btn.textContent = 'Process';
             btn.disabled = false;
         });
 
@@ -581,7 +582,7 @@
     function init() {
         const questionsContainer = document.querySelector('.o3Dpx');
         if (!questionsContainer) return;
-        injectSolveButton(questionsContainer);
+        injectProcessButton(questionsContainer);
     }
 
     if (document.readyState === 'loading') {

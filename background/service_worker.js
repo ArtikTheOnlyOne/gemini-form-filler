@@ -154,7 +154,7 @@ async function callGemini(prompt, config, image = null) {
     return JSON.parse(cleaned);
 }
 
-async function solveQuestion(question) {
+async function processQuestion(question) {
     const config = await getConfig();
     const prompt = buildPrompt(question);
 
@@ -259,8 +259,8 @@ async function fetchAvailableModels(apiKey) {
 }
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-    if (message.type === 'SOLVE_QUESTION') {
-        solveQuestion(message.question).then(sendResponse);
+    if (message.type === 'PROCESS_QUESTION') {
+        processQuestion(message.question).then(sendResponse);
         return true;
     }
 

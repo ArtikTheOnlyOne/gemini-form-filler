@@ -1,4 +1,4 @@
-#gff-solve-btn {
+#gff-process-btn {
     display: block;
     width: 100%;
     padding: 14px 0;
@@ -18,17 +18,17 @@
     transition: background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-#gff-solve-btn:hover {
+#gff-process-btn:hover {
     background-color: #5e35b1;
     box-shadow: 0 2px 6px rgba(103, 58, 183, 0.35);
 }
 
-#gff-solve-btn:active {
+#gff-process-btn:active {
     background-color: #512da8;
     box-shadow: none;
 }
 
-#gff-solve-btn:focus-visible {
+#gff-process-btn:focus-visible {
     outline: 3px solid rgba(103, 58, 183, 0.5);
     outline-offset: 2px;
 }
