@@ -40,7 +40,7 @@ Before using the extension, you need a Google Gemini API key.
 2. Paste your API key into the input field
 3. Click **Load models**
 4. If the key is valid, a dropdown will appear with available models
-5. Select the model you want to use for solving forms
+5. Select the model you want to use for processing forms
 6. Your settings are saved automatically
 
 The model list is refreshed every time you open the popup. If a previously selected model becomes unavailable, you will be prompted to choose a new one.
@@ -50,12 +50,12 @@ The model list is refreshed every time you open the popup. If a previously selec
 ## Usage
 
 1. Open any Google Form in your browser
-2. A **Solve** button will appear at the top of the form
-3. Click **Solve** — the extension will process each question one by one
+2. A **Process** button will appear at the top of the form
+3. Click **Process** — the extension will process each question one by one
 4. Each question gets a status icon showing the result (see below)
 5. Review all filled answers before submitting the form
 
-**Re-running:** Clicking **Solve** again will only process questions marked as failed. Already solved and skipped questions will not be re-processed.
+**Re-running:** Clicking **Process** again will only process questions marked as failed. Already processed and skipped questions will not be re-processed.
 
 ---
 
@@ -64,8 +64,8 @@ The model list is refreshed every time you open the popup. If a previously selec
 | Icon | Status | Meaning |
 |------|--------|---------|
 | <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/pending.svg" width="20"> | **Pending** | Waiting to be processed |
-| <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/solving.svg" width="20"> | **Solving** | Currently being processed by Gemini |
-| <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/success.svg" width="20"> | **Solved** | Answer generated and filled in successfully |
+| <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/processing.svg" width="20"> | **processing** | Currently being processed by Gemini |
+| <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/success.svg" width="20"> | **Processed** | Answer generated and filled in successfully |
 | <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/failure.svg" width="20"> | **Failed** | Could not generate an answer after all retry attempts |
 | <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/skipped.svg" width="20"> | **Skipped** | Question was intentionally skipped |
 
@@ -77,7 +77,7 @@ Questions are skipped in two cases:
 
 ## Rate limits
 
-If you hit the Gemini API rate limit during solving, a banner will appear with a countdown timer. Once the timer expires, click **Retry** to resume from where it stopped.
+If you hit the Gemini API rate limit during processing, a banner will appear with a countdown timer. Once the timer expires, click **Retry** to resume from where it stopped.
 
 If your daily or monthly quota is exhausted, all remaining questions will be marked as failed and you will be notified with an alert.
 
