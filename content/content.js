@@ -19,6 +19,7 @@
         success: chrome.runtime.getURL('states/success.svg'),
         failure: chrome.runtime.getURL('states/failure.svg'),
         skipped: chrome.runtime.getURL('states/skipped.svg'),
+        prefilled: chrome.runtime.getURL("states/prefilled.svg"),
     };
 
     let isAlertVisible = false;
@@ -166,6 +167,9 @@
             case 'skipped':
                 img.title = 'Skipped';
                 break;
+            case "prefilled":
+                img.title = "Already answered on the form";
+                break;
         }
 
         img.dataset.gffState = state;
@@ -198,9 +202,69 @@
             case 'skipped':
                 icon.title = 'Skipped';
                 break;
+            case "prefilled":
+                icon.title = "Already answered on the form";
+                break;
         }
 
         icon.dataset.gffState = state;
+    }
+
+    function isAnswered(item, type) {
+        switch (type) {
+            case "short_answer":
+            case "paragraph": {
+                const field = item.querySelector('input.whsOnd[jsname="YPqjbf"], textarea[jsname="YPqjbf"]');
+                return !!field && field.value.trim() !== "";
+            }
+            case "multiple_choice":
+            case "linear_scale":
+            case "rating":
+                return !!item.querySelector('[role="radio"][aria-checked="true"]');
+            case "checkboxes":
+                return !!item.querySelector('[role="checkbox"][aria-checked="true"]');
+            case "dropdown": {
+                const selected = item.querySelector('[role="option"].KKjvXb');
+                return !!selected && selected.getAttribute("data-value") !== "";
+            }
+            case "radio_grid": {
+                const groups = [...item.querySelectorAll('[role="radiogroup"]')];
+                return groups.length > 0 && groups.every((g) => g.querySelector('[role="radio"][aria-checked="true"]'));
+            }
+            case "checkbox_grid": {
+                const groups = [...item.querySelectorAll('[role="group"]')];
+                return groups.length > 0 && groups.every((g) => g.querySelector('[role="checkbox"][aria-checked="true"]'));
+            }
+            case "date": {
+                const input = item.querySelector('input[type="date"]');
+                return !!input && input.value.trim() !== "";
+            }
+            case "time": {
+                const { hourInput, minInput } = getTimeInputs(item);
+                return !!hourInput && !!minInput && hourInput.value.trim() !== "" && minInput.value.trim() !== "";
+            }
+            default:
+                return false;
+        }
+    }
+
+    function injectReprocessButton(item, question) {
+        const z12JJ = item.querySelector(".z12JJ");
+        if (!z12JJ) return;
+        if (z12JJ.querySelector(".gff-reprocess-btn")) return;
+
+        const btn = document.createElement("button");
+        btn.className = "gff-reprocess-btn";
+        btn.type = "button";
+        btn.textContent = "Reprocess";
+        btn.addEventListener("click", () => reprocessQuestion(question, btn));
+
+        const icon = z12JJ.querySelector(".gff-state-icon");
+        if (icon) {
+            z12JJ.insertBefore(btn, icon);
+        } else {
+            z12JJ.appendChild(btn);
+        }
     }
 
     function parseQuestions() {
@@ -253,13 +317,21 @@
             }
 
             const existingState = item.querySelector('.gff-state-icon')?.dataset.gffState;
-            if (existingState === 'success' || existingState === 'skipped') continue;
+            if (existingState === 'success' || existingState === 'skipped' || existingState === "prefilled") continue;
 
             const imgEl = item.querySelector('.gCouxf img');
             const imageUrl = imgEl?.src ?? null;
 
+            const question = { title, type, options, imageUrl, element: item };
+
+            if (!existingState && isAnswered(item, type)) {
+                injectStateIcon(item, "prefilled");
+                injectReprocessButton(item, question);
+                continue;
+            }
+
             injectStateIcon(item, 'pending');
-            questions.push({ title, type, options, imageUrl, element: item });
+            questions.push(question);
         }
 
         return questions;
@@ -400,10 +472,14 @@
         input.blur();
     }
 
+    function getTimeInputs(item) {
+        const inputs = [...item.querySelectorAll("input")].filter((el) => el.type !== "hidden");
+        return { hourInput: inputs[0] ?? null, minInput: inputs[1] ?? null };
+    }
+
     function fillTime(el, answer) {
         const [hh, mm] = String(answer).split(':');
-        const hourInput = el.querySelector('input[aria-label="Години"]');
-        const minInput = el.querySelector('input[aria-label="Хвилини"]');
+        const { hourInput, minInput } = getTimeInputs(el);
         if (hourInput) fillTextInput(hourInput, hh.padStart(2, '0'));
         if (minInput) fillTextInput(minInput, mm?.padStart(2, '0') ?? '00');
     }
@@ -466,21 +542,11 @@
         });
     }
 
-    async function processQuestions(questions) {
-        const btn = document.getElementById('gff-process-btn');
-        for (let i = 0; i < questions.length; i++) {
-            const question = questions[i];
-
+    async function processQuestion(question) {
+        while (true) {
             if (!isContextValid()) {
-                for (const q of questions) {
-                    if (q.element.querySelector('.gff-state-icon')?.dataset.gffState === 'processing') {
-                        setStateIcon(q.element, 'failure');
-                    }
-                }
-                btn.textContent = 'Reload page ↺';
-                btn.disabled = false;
-                btn.onclick = () => location.reload();
-                return;
+                setStateIcon(question.element, "failure");
+                return "context-lost";
             }
 
             setStateIcon(question.element, 'processing');
@@ -499,23 +565,21 @@
             } catch (err) {
                 setStateIcon(question.element, 'failure');
                 console.warn(`[GFF] Message failed: "${question.title}"`, err.message);
-                continue;
+                return "failed";
             }
 
             if (response?.quotaExhausted) {
                 setStateIcon(question.element, 'failure');
-                for (let j = i + 1; j < questions.length; j++) {
-                    setStateIcon(questions[j].element, 'failure');
-                }
-                btn.textContent = 'Process';
-                btn.disabled = false;
-                await gffAlert('Gemini API quota exhausted.\n\nYou have reached your daily or per-minute request limit. Please wait before trying again or check your API quota in Google AI Studio.');
-                return;
+                return "quota";
             }
 
             if (response?.rateLimited) {
                 setStateIcon(question.element, 'pending');
                 console.warn(`[GFF] Rate limited. Retry after ${response.waitSeconds}s`);
+
+                const btn = document.getElementById("gff-process-btn");
+                const prevText = btn.textContent;
+                const prevDisabled = btn.disabled;
 
                 btn.disabled = true;
                 btn.textContent = 'Rate limited…';
@@ -524,28 +588,65 @@
                     showRateLimitBanner(response.waitSeconds, btn, resolve);
                 });
 
-                btn.disabled = true;
-                btn.textContent = 'Processing…';
-                i--;
+                btn.textContent = prevText;
+                btn.disabled = prevDisabled;
                 continue;
             }
 
             if (!response?.success) {
                 setStateIcon(question.element, 'failure');
                 console.warn(`[GFF] Failed: "${question.title}"`, response?.error);
-                continue;
+                return "failed";
             }
 
             if (response.skipped) {
                 setStateIcon(question.element, 'skipped');
                 console.log(`[GFF] Skipped: "${question.title}"`);
-                continue;
+                return "skipped";
             }
 
             setStateIcon(question.element, 'success');
             console.log(`[GFF] Processed: "${question.title}"`, response.answer);
-
             fillAnswer(question, response.answer);
+            return "success";
+        }
+    }
+
+    async function processQuestions(questions) {
+        const btn = document.getElementById('gff-process-btn');
+
+        for (let i = 0; i < questions.length; i++) {
+            const result = await processQuestion(questions[i]);
+
+            if (result === "context-lost") {
+                for (const q of questions) {
+                    if (q.element.querySelector('.gff-state-icon')?.dataset.gffState === 'processing') {
+                        setStateIcon(q.element, 'failure');
+                    }
+                }
+                btn.textContent = 'Reload page ↺';
+                btn.disabled = false;
+                btn.onclick = () => location.reload();
+                return;
+            }
+
+            if (result === "quota") {
+                for (let j = i + 1; j < questions.length; j++) {
+                    setStateIcon(questions[j].element, 'failure');
+                }
+                btn.textContent = 'Process';
+                btn.disabled = false;
+                await gffAlert('Gemini API quota exhausted.\n\nYou have reached your daily or per-minute request limit. Please wait before trying again or check your API quota in Google AI Studio.');
+                return;
+            }
+        }
+    }
+
+    async function reprocessQuestion(question, button) {
+        button.remove();
+        const result = await processQuestion(question);
+        if (result === "quota") {
+            await gffAlert('Gemini API quota exhausted.\n\nYou have reached your daily or per-minute request limit. Please wait before trying again or check your API quota in Google AI Studio.');
         }
     }
 

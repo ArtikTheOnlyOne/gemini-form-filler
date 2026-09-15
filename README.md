@@ -55,7 +55,7 @@ The model list is refreshed every time you open the popup. If a previously selec
 4. Each question gets a status icon showing the result (see below)
 5. Review all filled answers before submitting the form
 
-**Re-running:** Clicking **Process** again will only process questions marked as failed. Already processed and skipped questions will not be re-processed.
+**Rerunning:** Clicking **Process** again will only process questions marked as failed. Already processed and skipped questions will not be reprocessed.
 
 ---
 
@@ -64,14 +64,16 @@ The model list is refreshed every time you open the popup. If a previously selec
 | Icon | Status | Meaning |
 |------|--------|---------|
 | <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/pending.svg" width="20"> | **Pending** | Waiting to be processed |
-| <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/processing.svg" width="20"> | **processing** | Currently being processed by Gemini |
+| <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/processing.svg" width="20"> | **Processing** | Currently being processed by Gemini |
 | <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/success.svg" width="20"> | **Processed** | Answer generated and filled in successfully |
 | <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/failure.svg" width="20"> | **Failed** | Could not generate an answer after all retry attempts |
 | <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/skipped.svg" width="20"> | **Skipped** | Question was intentionally skipped |
+| <img src="https://raw.githubusercontent.com/ArtikTheOnlyOne/gemini-form-filler/main/states/prefilled.svg" width="20"> | **Prefilled** | Question already contains an answer |
 
-Questions are skipped in two cases:
+Questions are skipped in three cases:
 - The question is **personal** (name, email, opinion, personal experience) — Gemini cannot answer on your behalf
 - The question is a **file upload** — not supported by the extension
+- The question **already contains an answer** — in this case, you will have the possibility to manually process this question using a dedicated button
 
 ---
 
