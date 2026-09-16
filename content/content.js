@@ -106,8 +106,7 @@
     }
 
     function parseLinearScale(el) {
-        const radios = [...el.querySelectorAll("[role='radio'][data-value]")]
-            .filter(Boolean);
+        const radios = [...el.querySelectorAll("[role='radio'][data-value]")];
         if (!radios.length) return null;
 
         const values = radios.map(r => Number(r.getAttribute("data-value")));
@@ -121,8 +120,7 @@
     }
 
     function parseRating(el) {
-        const labels = [...el.querySelectorAll("label[data-ratingscale]")]
-            .filter(Boolean);
+        const labels = [...el.querySelectorAll("label[data-ratingscale]")];
         if (!labels.length) return null;
         const max = Math.max(...labels.map(l => Number(l.getAttribute("data-ratingscale"))));
         return { max };
@@ -394,9 +392,11 @@
 
     function fillCheckboxes(el, answers) {
         const list = Array.isArray(answers) ? answers : [answers];
-        for (const answer of list) {
-            const box = el.querySelector(`[aria-label="${CSS.escape(answer)}"][role="checkbox"]`);
-            if (box && box.getAttribute("aria-checked") !== "true") box.click();
+        const boxes = el.querySelectorAll("[role='checkbox'][data-answer-value]");
+        for (const box of boxes) {
+            const shouldBeChecked = list.includes(box.getAttribute("data-answer-value"));
+            const isChecked = box.getAttribute("aria-checked") === "true";
+            if (shouldBeChecked !== isChecked) box.click();
         }
     }
 
@@ -454,13 +454,25 @@
     }
 
     function fillCheckboxGrid(el, answer) {
-        for (const [row, cols] of Object.entries(answer)) {
-            const list = Array.isArray(cols) ? cols : [cols];
-            for (const col of list) {
-                const ariaLabel = `${col}, відповідь для ${row}`;
-                const box = el.querySelector(`[aria-label="${CSS.escape(ariaLabel)}"]`);
-                if (box && box.getAttribute("aria-checked") !== "true") box.click();
-            }
+        const headerRow = el.querySelector(".KZt9Tc");
+        const columns = headerRow
+            ? [...headerRow.querySelectorAll(".V4d7Ke.OIC90c")].map((c) => c.textContent.trim())
+            : [];
+
+        const groups = el.querySelectorAll("[role='group']");
+        for (const group of groups) {
+            const rowLabel = group.querySelector(".V4d7Ke.wzWPxe")?.textContent.trim();
+            if (!rowLabel) continue;
+
+            const wanted = answer[rowLabel];
+            const wantedList = wanted ? (Array.isArray(wanted) ? wanted : [wanted]) : [];
+
+            const boxes = [...group.querySelectorAll("[role='checkbox']")];
+            boxes.forEach((box, i) => {
+                const shouldBeChecked = wantedList.includes(columns[i]);
+                const isChecked = box.getAttribute("aria-checked") === "true";
+                if (shouldBeChecked !== isChecked) box.click();
+            });
         }
     }
 
