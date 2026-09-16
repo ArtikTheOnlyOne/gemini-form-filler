@@ -203,14 +203,7 @@ async function processQuestion(question) {
     return { success: false, error: lastError?.message ?? "Unknown error" };
 }
 
-const MODEL_EXCLUDE = [
-    "embedding",
-    "aqa",
-    "nano",
-    "vision",
-];
-
-const MIN_OUTPUT_TOKENS = 1024;
+const STABLE_MODEL_PATTERN = /^gemini-\d+(?:\.\d+)?-(?:flash|pro)(?:-(?:lite|8b))?$/;
 
 async function fetchAvailableModels(apiKey) {
     const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}&pageSize=100`;
@@ -227,17 +220,10 @@ async function fetchAvailableModels(apiKey) {
 
     const models = (data.models ?? [])
         .filter(m => {
-            const id = (m.name ?? "").toLowerCase();
-            const displayName = (m.displayName ?? "").toLowerCase();
-            const searchStr = id + " " + displayName;
+            const id = (m.name ?? "").replace("models/", "");
 
             if (!m.supportedGenerationMethods?.includes("generateContent")) return false;
-
-            if (MODEL_EXCLUDE.some(seg => searchStr.includes(seg))) return false;
-
-            if (!id.includes("gemini")) return false;
-
-            if ((m.outputTokenLimit ?? 0) < MIN_OUTPUT_TOKENS) return false;
+            if (!STABLE_MODEL_PATTERN.test(id)) return false;
 
             return true;
         })

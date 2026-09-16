@@ -6,20 +6,30 @@ const loadBtn = document.getElementById("gff-load-btn");
 const STATUS = {
     INITIAL: "Please insert your Google Gemini API key and press the button below.",
     LOADING: "Loading…",
-    MODEL_GONE: "The previously selected model is no longer available. Please press Load models and select a new one.",
+    MODEL_GONE: "The previously selected model is no longer available. Please select a new one.",
 };
 
-function showStatus(text, modifier = null) {
+let savedApiKey = null;
+let hasValidModel = false;
+
+function setStatusText(text, modifier = null) {
+    if (!text) {
+        statusText.hidden = true;
+        return;
+    }
     statusText.textContent = text;
     statusText.className = "gff-status-text";
     if (modifier) statusText.classList.add(modifier);
     statusText.hidden = false;
-    modelSelect.hidden = true;
 }
 
-function showModels(models, selectedModel = null) {
-    modelSelect.innerHTML = "";
+function setModelOptions(models, selectedModel = null) {
+    if (!models) {
+        modelSelect.hidden = true;
+        return;
+    }
 
+    modelSelect.innerHTML = "";
     for (const { id, displayName } of models) {
         const opt = document.createElement("option");
         opt.value = id;
@@ -32,13 +42,20 @@ function showModels(models, selectedModel = null) {
         modelSelect.value = selectedModel;
     }
 
-    statusText.hidden = true;
     modelSelect.hidden = false;
 }
 
 function setLoading(on) {
     loadBtn.disabled = on;
-    if (on) showStatus(STATUS.LOADING, "is-loading");
+    if (on) {
+        setModelOptions(null);
+        setStatusText(STATUS.LOADING, "is-loading");
+    }
+}
+
+function updateButtonVisibility() {
+    const keyChanged = apiKeyInput.value.trim() !== (savedApiKey ?? "");
+    loadBtn.hidden = !keyChanged && hasValidModel;
 }
 
 async function loadConfig() {
@@ -63,16 +80,21 @@ async function loadModels(apiKey, savedModel = null) {
     setLoading(false);
 
     if (!response.success) {
-        showStatus(response.error ?? "Unknown error.", "is-error");
+        setStatusText(response.error ?? "Unknown error.", "is-error");
+        hasValidModel = false;
+        updateButtonVisibility();
         return;
     }
 
     const models = response.models;
 
     await saveConfig({ apiKey, models });
+    savedApiKey = apiKey;
 
     if (models.length === 0) {
-        showStatus("No supported models found for this key.", "is-error");
+        setStatusText("No supported models found for this key.", "is-error");
+        hasValidModel = false;
+        updateButtonVisibility();
         return;
     }
 
@@ -80,29 +102,39 @@ async function loadModels(apiKey, savedModel = null) {
 
     if (savedModel && !ids.includes(savedModel)) {
         await saveConfig({ model: null });
-        showStatus(STATUS.MODEL_GONE, "is-model-gone");
-
-        showModels(models, null);
+        setStatusText(STATUS.MODEL_GONE, "is-model-gone");
+        setModelOptions(models, null);
+        hasValidModel = false;
+        updateButtonVisibility();
         return;
     }
 
-    showModels(models, savedModel);
-
+    setStatusText(null);
+    setModelOptions(models, savedModel);
 
     if (savedModel && ids.includes(savedModel)) {
         await saveConfig({ model: savedModel });
+        hasValidModel = true;
+    } else {
+        hasValidModel = false;
     }
+
+    updateButtonVisibility();
 }
 
 modelSelect.addEventListener("change", async () => {
     await saveConfig({ model: modelSelect.value });
+    hasValidModel = true;
+    updateButtonVisibility();
 });
+
+apiKeyInput.addEventListener("input", updateButtonVisibility);
 
 loadBtn.addEventListener("click", async () => {
     const apiKey = apiKeyInput.value.trim();
 
     if (!apiKey) {
-        showStatus("Please enter your API key.", "is-error");
+        setStatusText("Please enter your API key.", "is-error");
         return;
     }
 
@@ -117,7 +149,8 @@ async function init() {
     }
 
     if (!config.apiKey) {
-        showStatus(STATUS.INITIAL);
+        setStatusText(STATUS.INITIAL);
+        updateButtonVisibility();
         return;
     }
 
