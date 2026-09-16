@@ -4,10 +4,10 @@ const DEFAULT_CONFIG = {
 };
 
 const MAX_RETRIES = 3;
-const SKIP_KEYWORD = '__SKIP__';
+const SKIP_KEYWORD = "__SKIP__";
 
 async function getConfig() {
-    const { config } = await chrome.storage.local.get('config');
+    const { config } = await chrome.storage.local.get("config");
     return { ...DEFAULT_CONFIG, ...config };
 }
 
@@ -17,9 +17,9 @@ async function fetchImageAsBase64(url) {
 
     const buffer = await response.arrayBuffer();
     const bytes = new Uint8Array(buffer);
-    const mimeType = response.headers.get('content-type')?.split(';')[0] ?? 'image/jpeg';
+    const mimeType = response.headers.get("content-type")?.split(";")[0] ?? "image/jpeg";
 
-    let binary = '';
+    let binary = "";
     for (const byte of bytes) binary += String.fromCharCode(byte);
     const base64 = btoa(binary);
 
@@ -31,11 +31,11 @@ function buildPrompt(question) {
 
     const optionsBlock = options !== null
         ? `\nAvailable options:\n${JSON.stringify(options, null, 2)}`
-        : '';
+        : "";
 
     const imageNote = question.imageUrl
-        ? '\nThe question contains an image provided below. Use it to answer.'
-        : '';
+        ? "\nThe question contains an image provided below. Use it to answer."
+        : "";
 
     return `You are an assistant that answers Google Form questions with factual, objectively correct answers.
 
@@ -110,8 +110,8 @@ async function callGemini(prompt, config, image = null) {
     };
 
     const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
     });
 
@@ -123,9 +123,9 @@ async function callGemini(prompt, config, image = null) {
         if (status === 429) {
             const details = err?.error?.details ?? [];
 
-            const retryInfo = details.find(d => d['@type']?.includes('RetryInfo'));
+            const retryInfo = details.find(d => d["@type"]?.includes("RetryInfo"));
             const retryDelay = retryInfo?.retryDelay;
-            const retryAfterHeader = response.headers.get('Retry-After');
+            const retryAfterHeader = response.headers.get("Retry-After");
 
             const isQuotaExhausted = !retryDelay
                 && !retryAfterHeader
@@ -149,8 +149,8 @@ async function callGemini(prompt, config, image = null) {
     }
 
     const data = await response.json();
-    const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
-    const cleaned = raw.trim().replace(/^```json\s*/i, '').replace(/```\s*$/, '').trim();
+    const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+    const cleaned = raw.trim().replace(/^```json\s*/i, "").replace(/```\s*$/, "").trim();
     return JSON.parse(cleaned);
 }
 
@@ -167,14 +167,14 @@ async function processQuestion(question) {
                 try {
                     image = await fetchImageAsBase64(question.imageUrl);
                 } catch (err) {
-                    console.warn('[GFF] Could not fetch question image:', err.message);
+                    console.warn("[GFF] Could not fetch question image:", err.message);
                 }
             }
 
             const result = await callGemini(prompt, config, image);
 
             if (result?.answer === undefined) {
-                throw new Error('Response missing "answer" field');
+                throw new Error("Response missing 'answer' field");
             }
 
             const skipped = result.answer === SKIP_KEYWORD;
@@ -200,14 +200,14 @@ async function processQuestion(question) {
         }
     }
 
-    return { success: false, error: lastError?.message ?? 'Unknown error' };
+    return { success: false, error: lastError?.message ?? "Unknown error" };
 }
 
 const MODEL_EXCLUDE = [
-    'embedding',
-    'aqa',
-    'nano',
-    'vision',
+    "embedding",
+    "aqa",
+    "nano",
+    "vision",
 ];
 
 const MIN_OUTPUT_TOKENS = 1024;
@@ -227,29 +227,29 @@ async function fetchAvailableModels(apiKey) {
 
     const models = (data.models ?? [])
         .filter(m => {
-            const id = (m.name ?? '').toLowerCase();
-            const displayName = (m.displayName ?? '').toLowerCase();
-            const searchStr = id + ' ' + displayName;
+            const id = (m.name ?? "").toLowerCase();
+            const displayName = (m.displayName ?? "").toLowerCase();
+            const searchStr = id + " " + displayName;
 
-            if (!m.supportedGenerationMethods?.includes('generateContent')) return false;
+            if (!m.supportedGenerationMethods?.includes("generateContent")) return false;
 
             if (MODEL_EXCLUDE.some(seg => searchStr.includes(seg))) return false;
 
-            if (!id.includes('gemini')) return false;
+            if (!id.includes("gemini")) return false;
 
             if ((m.outputTokenLimit ?? 0) < MIN_OUTPUT_TOKENS) return false;
 
             return true;
         })
         .map(m => ({
-            id: m.name.replace('models/', ''),
-            displayName: m.displayName ?? m.name.replace('models/', ''),
+            id: m.name.replace("models/", ""),
+            displayName: m.displayName ?? m.name.replace("models/", ""),
         }))
         .sort((a, b) => {
             const rank = id => {
-                if (id.includes('flash')) return 0;
-                if (id.includes('pro')) return 1;
-                if (id.includes('ultra')) return 2;
+                if (id.includes("flash")) return 0;
+                if (id.includes("pro")) return 1;
+                if (id.includes("ultra")) return 2;
                 return 3;
             };
             return rank(a.id) - rank(b.id) || a.id.localeCompare(b.id);
@@ -259,15 +259,15 @@ async function fetchAvailableModels(apiKey) {
 }
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-    if (message.type === 'PROCESS_QUESTION') {
+    if (message.type === "PROCESS_QUESTION") {
         processQuestion(message.question).then(sendResponse);
         return true;
     }
 
-    if (message.type === 'FETCH_MODELS') {
+    if (message.type === "FETCH_MODELS") {
         fetchAvailableModels(message.apiKey)
             .then(models => sendResponse({ success: true, models }))
-            .catch(err => sendResponse({ success: false, error: `${err.message} (${err.status ?? 'network error'})` }));
+            .catch(err => sendResponse({ success: false, error: `${err.message} (${err.status ?? "network error"})` }));
         return true;
     }
 });

@@ -1,27 +1,27 @@
-const apiKeyInput = document.getElementById('gff-api-key');
-const statusText = document.getElementById('gff-status-text');
-const modelSelect = document.getElementById('gff-model-select');
-const loadBtn = document.getElementById('gff-load-btn');
+const apiKeyInput = document.getElementById("gff-api-key");
+const statusText = document.getElementById("gff-status-text");
+const modelSelect = document.getElementById("gff-model-select");
+const loadBtn = document.getElementById("gff-load-btn");
 
 const STATUS = {
-    INITIAL: 'Please insert your Google Gemini API key and press the button below.',
-    LOADING: 'Loading…',
-    MODEL_GONE: 'The previously selected model is no longer available. Please press Load models and select a new one.',
+    INITIAL: "Please insert your Google Gemini API key and press the button below.",
+    LOADING: "Loading…",
+    MODEL_GONE: "The previously selected model is no longer available. Please press Load models and select a new one.",
 };
 
 function showStatus(text, modifier = null) {
     statusText.textContent = text;
-    statusText.className = 'gff-status-text';
+    statusText.className = "gff-status-text";
     if (modifier) statusText.classList.add(modifier);
     statusText.hidden = false;
     modelSelect.hidden = true;
 }
 
 function showModels(models, selectedModel = null) {
-    modelSelect.innerHTML = '';
+    modelSelect.innerHTML = "";
 
     for (const { id, displayName } of models) {
-        const opt = document.createElement('option');
+        const opt = document.createElement("option");
         opt.value = id;
         opt.text = displayName;
         modelSelect.appendChild(opt);
@@ -38,11 +38,11 @@ function showModels(models, selectedModel = null) {
 
 function setLoading(on) {
     loadBtn.disabled = on;
-    if (on) showStatus(STATUS.LOADING, 'is-loading');
+    if (on) showStatus(STATUS.LOADING, "is-loading");
 }
 
 async function loadConfig() {
-    const { config } = await chrome.storage.local.get('config');
+    const { config } = await chrome.storage.local.get("config");
     return config ?? {};
 }
 
@@ -52,7 +52,7 @@ async function saveConfig(patch) {
 }
 
 async function fetchModels(apiKey) {
-    return chrome.runtime.sendMessage({ type: 'FETCH_MODELS', apiKey });
+    return chrome.runtime.sendMessage({ type: "FETCH_MODELS", apiKey });
 }
 
 async function loadModels(apiKey, savedModel = null) {
@@ -63,7 +63,7 @@ async function loadModels(apiKey, savedModel = null) {
     setLoading(false);
 
     if (!response.success) {
-        showStatus(response.error ?? 'Unknown error.', 'is-error');
+        showStatus(response.error ?? "Unknown error.", "is-error");
         return;
     }
 
@@ -72,7 +72,7 @@ async function loadModels(apiKey, savedModel = null) {
     await saveConfig({ apiKey, models });
 
     if (models.length === 0) {
-        showStatus('No supported models found for this key.', 'is-error');
+        showStatus("No supported models found for this key.", "is-error");
         return;
     }
 
@@ -80,7 +80,7 @@ async function loadModels(apiKey, savedModel = null) {
 
     if (savedModel && !ids.includes(savedModel)) {
         await saveConfig({ model: null });
-        showStatus(STATUS.MODEL_GONE, 'is-model-gone');
+        showStatus(STATUS.MODEL_GONE, "is-model-gone");
 
         showModels(models, null);
         return;
@@ -94,15 +94,15 @@ async function loadModels(apiKey, savedModel = null) {
     }
 }
 
-modelSelect.addEventListener('change', async () => {
+modelSelect.addEventListener("change", async () => {
     await saveConfig({ model: modelSelect.value });
 });
 
-loadBtn.addEventListener('click', async () => {
+loadBtn.addEventListener("click", async () => {
     const apiKey = apiKeyInput.value.trim();
 
     if (!apiKey) {
-        showStatus('Please enter your API key.', 'is-error');
+        showStatus("Please enter your API key.", "is-error");
         return;
     }
 
