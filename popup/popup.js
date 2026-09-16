@@ -126,6 +126,7 @@ modelSelect.addEventListener("change", async () => {
     await saveConfig({ model: modelSelect.value });
     hasValidModel = true;
     updateButtonVisibility();
+    modelSelect.blur();
 });
 
 apiKeyInput.addEventListener("input", updateButtonVisibility);

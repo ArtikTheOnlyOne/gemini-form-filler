@@ -9,7 +9,10 @@
 body {
     width: 320px;
     min-width: 320px;
-    font-family: "Segoe UI", system-ui, sans-serif;
+    font-family: "Google Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: "GRAD" 0;
     background: #ffffff;
     overflow: hidden;
 }
@@ -27,6 +30,12 @@ body {
     justify-content: center;
     align-items: center;
     padding: 18px 0 22px;
+}
+
+.gff-header-text {
+    color: white;
+    font-size: 24px;
+    margin-left: 12px;
 }
 
 .gff-logo {
