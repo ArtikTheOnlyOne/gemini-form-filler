@@ -9,7 +9,7 @@
 body {
     width: 320px;
     min-width: 320px;
-    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-family: "Segoe UI", system-ui, sans-serif;
     background: #ffffff;
     overflow: hidden;
 }
@@ -53,13 +53,13 @@ body {
 }
 
 .gff-key-input {
-    font-family: 'Courier New', 'Courier', monospace;
+    font-family: "Courier New", "Courier", monospace;
     letter-spacing: 2px;
 }
 
 .gff-key-input::placeholder {
     color: #b8b0c8;
-    font-family: 'Courier New', 'Courier', monospace;
+    font-family: "Courier New", "Courier", monospace;
     letter-spacing: 1px;
 }
 
@@ -105,7 +105,7 @@ body {
 }
 
 .gff-select-wrapper::after {
-    content: '';
+    content: "";
     pointer-events: none;
     position: absolute;
     right: 6px;
@@ -148,7 +148,7 @@ body {
     background-color: #ffffff;
     color: #1a1a1a;
     font-size: 13px;
-    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-family: "Segoe UI", system-ui, sans-serif;
     padding: 14px 12px 14px 20px;
     line-height: 2.2;
 }
