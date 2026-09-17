@@ -48,7 +48,7 @@
             const btn = document.createElement("button");
             btn.className = "gff-toast-btn";
             btn.type = "button";
-            btn.textContent = "OK";
+            btn.textContent = chrome.i18n.getMessage("toastOkButton");
 
             const close = () => {
                 toast.classList.add("gff-toast--hiding");
@@ -153,22 +153,22 @@
 
         switch (state) {
             case "pending":
-                img.title = "Pending";
+                img.title = chrome.i18n.getMessage("iconPending");
                 break;
             case "processing":
-                img.title = "Processing...";
+                img.title = chrome.i18n.getMessage("iconProcessing");
                 break;
             case "success":
-                img.title = "Processed successfully";
+                img.title = chrome.i18n.getMessage("iconSuccess");
                 break;
             case "failure":
-                img.title = "Failed to process";
+                img.title = chrome.i18n.getMessage("iconFailure");
                 break;
             case "skipped":
-                img.title = "Skipped";
+                img.title = chrome.i18n.getMessage("iconSkipped");
                 break;
             case "prefilled":
-                img.title = "Already answered on the form";
+                img.title = chrome.i18n.getMessage("iconPrefilled");
                 break;
         }
 
@@ -188,22 +188,22 @@
 
         switch (state) {
             case "pending":
-                icon.title = "Pending";
+                icon.title = chrome.i18n.getMessage("iconPending");
                 break;
             case "processing":
-                icon.title = "Processing...";
+                icon.title = chrome.i18n.getMessage("iconProcessing");
                 break;
             case "success":
-                icon.title = "Processed successfully";
+                icon.title = chrome.i18n.getMessage("iconSuccess");
                 break;
             case "failure":
-                icon.title = "Failed to process";
+                icon.title = chrome.i18n.getMessage("iconFailure");
                 break;
             case "skipped":
-                icon.title = "Skipped";
+                icon.title = chrome.i18n.getMessage("iconSkipped");
                 break;
             case "prefilled":
-                icon.title = "Already answered on the form";
+                icon.title = chrome.i18n.getMessage("iconPrefilled");
                 break;
         }
 
@@ -256,7 +256,7 @@
         const btn = document.createElement("button");
         btn.className = "gff-reprocess-btn";
         btn.type = "button";
-        btn.textContent = "Reprocess";
+        btn.textContent = chrome.i18n.getMessage("reprocessButton");
         btn.addEventListener("click", () => reprocessQuestion(question, btn));
 
         const icon = z12JJ.querySelector(".gff-state-icon");
@@ -527,7 +527,7 @@
 
         const retryBtn = document.createElement("button");
         retryBtn.id = "gff-retry-btn";
-        retryBtn.textContent = "Retry";
+        retryBtn.textContent = chrome.i18n.getMessage("retryButton");
         retryBtn.disabled = true;
         banner.appendChild(retryBtn);
 
@@ -536,7 +536,7 @@
         let remaining = waitSeconds;
 
         const tick = () => {
-            msg.textContent = `Rate limit reached. Resuming in ${remaining}s…`;
+            msg.textContent = chrome.i18n.getMessage("rateLimitCountdown", [String(remaining)]);
         };
         tick();
 
@@ -545,7 +545,7 @@
             tick();
             if (remaining <= 0) {
                 clearInterval(timer);
-                msg.textContent = "Rate limit lifted. Ready to resume.";
+                msg.textContent = chrome.i18n.getMessage("rateLimitLifted");
                 retryBtn.disabled = false;
             }
         }, 1000);
@@ -596,7 +596,7 @@
                 const prevDisabled = btn.disabled;
 
                 btn.disabled = true;
-                btn.textContent = "Rate limited…";
+                btn.textContent = chrome.i18n.getMessage("processButtonRateLimited");
 
                 await new Promise(resolve => {
                     showRateLimitBanner(response.waitSeconds, btn, resolve);
@@ -638,7 +638,7 @@
                         setStateIcon(q.element, "failure");
                     }
                 }
-                btn.textContent = "Reload page ↺";
+                btn.textContent = chrome.i18n.getMessage("processButtonReload");
                 btn.disabled = false;
                 btn.onclick = () => location.reload();
                 return;
@@ -648,9 +648,9 @@
                 for (let j = i + 1; j < questions.length; j++) {
                     setStateIcon(questions[j].element, "failure");
                 }
-                btn.textContent = "Process";
+                btn.textContent = chrome.i18n.getMessage("processButtonDefault");
                 btn.disabled = false;
-                await gffAlert("Gemini API quota exhausted.\n\nYou have reached your daily or per-minute request limit. Please wait before trying again or check your API quota in Google AI Studio.");
+                await gffAlert(chrome.i18n.getMessage("alertQuotaExhausted"));
                 return;
             }
         }
@@ -660,7 +660,7 @@
         button.remove();
         const result = await processQuestion(question);
         if (result === "quota") {
-            await gffAlert("Gemini API quota exhausted.\n\nYou have reached your daily or per-minute request limit. Please wait before trying again or check your API quota in Google AI Studio.");
+            await gffAlert(chrome.i18n.getMessage("alertQuotaExhausted"));
         }
     }
 
@@ -669,25 +669,25 @@
 
         const btn = document.createElement("button");
         btn.id = "gff-process-btn";
-        btn.textContent = "Process";
+        btn.textContent = chrome.i18n.getMessage("processButtonDefault");
         btn.setAttribute("type", "button");
 
         btn.addEventListener("click", async () => {
             const { config } = await chrome.storage.local.get("config");
             if (!config?.apiKey || !config?.model) {
-                await gffAlert("Gemini Form Filler is not configured.\n\nPlease open the extension popup, enter your API key and select a model.");
+                await gffAlert(chrome.i18n.getMessage("alertNotConfigured"));
                 return;
             }
 
             btn.disabled = true;
-            btn.textContent = "Processing…";
+            btn.textContent = chrome.i18n.getMessage("processButtonWorking");
 
             const questions = parseQuestions();
             console.log("[GFF] Starting, questions:", questions.length);
 
             await processQuestions(questions);
 
-            btn.textContent = "Process";
+            btn.textContent = chrome.i18n.getMessage("processButtonDefault");
             btn.disabled = false;
         });
 

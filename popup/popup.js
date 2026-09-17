@@ -4,10 +4,25 @@ const modelSelect = document.getElementById("gff-model-select");
 const loadBtn = document.getElementById("gff-load-btn");
 
 const STATUS = {
-    INITIAL: "Please insert your Google Gemini API key and press the button below.",
-    LOADING: "Loading…",
-    MODEL_GONE: "The previously selected model is no longer available. Please select a new one.",
+    INITIAL: chrome.i18n.getMessage("statusInitial"),
+    LOADING: chrome.i18n.getMessage("statusLoading"),
+    MODEL_GONE: chrome.i18n.getMessage("statusModelGone"),
 };
+
+function applyI18n() {
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+        el.textContent = chrome.i18n.getMessage(el.dataset.i18n);
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+        el.placeholder = chrome.i18n.getMessage(el.dataset.i18nPlaceholder);
+    });
+    document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
+        el.alt = chrome.i18n.getMessage(el.dataset.i18nAlt);
+    });
+    document.documentElement.lang = chrome.i18n.getUILanguage();
+}
+
+applyI18n();
 
 let savedApiKey = null;
 let hasValidModel = false;
@@ -80,7 +95,7 @@ async function loadModels(apiKey, savedModel = null) {
     setLoading(false);
 
     if (!response.success) {
-        setStatusText(response.error ?? "Unknown error.", "is-error");
+        setStatusText(response.error ?? chrome.i18n.getMessage("statusUnknownError"), "is-error");
         hasValidModel = false;
         updateButtonVisibility();
         return;
@@ -92,7 +107,7 @@ async function loadModels(apiKey, savedModel = null) {
     savedApiKey = apiKey;
 
     if (models.length === 0) {
-        setStatusText("No supported models found for this key.", "is-error");
+        setStatusText(chrome.i18n.getMessage("statusNoModels"), "is-error");
         hasValidModel = false;
         updateButtonVisibility();
         return;
@@ -135,7 +150,7 @@ loadBtn.addEventListener("click", async () => {
     const apiKey = apiKeyInput.value.trim();
 
     if (!apiKey) {
-        setStatusText("Please enter your API key.", "is-error");
+        setStatusText(chrome.i18n.getMessage("statusEnterKey"), "is-error");
         return;
     }
 

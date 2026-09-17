@@ -113,6 +113,20 @@ If your daily or monthly quota is exhausted, all remaining questions will be mar
 
 ---
 
+## Locales
+
+You can and are welcome to translate this extension to the language of your choice, if it is not yet supported. To do this:
+1. Fork this repository
+2. Create a copy of the [English version folder](_locales/en/) inside the [_locales](_locales/) folder
+3. Rename it to the appropriate code from [Chrome's list of supported locales](https://developer.chrome.com/docs/extensions/reference/api/i18n#locales) — use an underscore, not a hyphen, for regional variants (e.g. `uk_UA`, not `uk-UA`), or just ignore regional variants completely (e.g. just `uk` instead of `uk_UA`)
+4. Open the [messages file](_locales/en/messages.json) of the newly created folder
+5. Translate the contents of all **message** keys (**DO NOT** edit **ANYTHING** else, including placeholders)
+6. Open a [pull request](https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/creating-a-pull-request-from-a-fork) and wait for review
+
+We are grateful for your contributions to the open-source community
+
+---
+
 ## License
 
 MIT
