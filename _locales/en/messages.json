@@ -1,0 +1,112 @@
+{
+    "description": {
+        "message": "An extension that automatically fills Google Forms using Google Gemini",
+        "description": "Short description shown in the extensions page and Chrome Web Store listing."
+    },
+    "apiKeyPlaceholder": {
+        "message": "Gemini API key",
+        "description": "Placeholder text in the API key input field."
+    },
+    "loadModelsButton": {
+        "message": "Load models",
+        "description": "Button that fetches the list of available Gemini models for the entered API key."
+    },
+    "statusInitial": {
+        "message": "Please insert your Google Gemini API key and press the button below.",
+        "description": "Shown in the popup before any API key has been entered."
+    },
+    "statusLoading": {
+        "message": "Loading…",
+        "description": "Shown in the popup while fetching the model list."
+    },
+    "statusModelGone": {
+        "message": "The previously selected model is no longer available. Please select a new one.",
+        "description": "Shown when the model saved in settings is missing from the freshly fetched model list."
+    },
+    "statusNoModels": {
+        "message": "No supported models found for this key.",
+        "description": "Shown when the API key is valid but returns zero usable models."
+    },
+    "statusEnterKey": {
+        "message": "Please enter your API key.",
+        "description": "Shown when the user clicks Load models with an empty input field."
+    },
+    "statusUnknownError": {
+        "message": "Unknown error.",
+        "description": "Fallback shown when API key validation fails without a specific error message."
+    },
+    "toastOkButton": {
+        "message": "OK",
+        "description": "Button that dismisses the on-page toast notification."
+    },
+    "iconPending": {
+        "message": "Pending",
+        "description": "Tooltip for the state icon: question is waiting to be processed."
+    },
+    "iconProcessing": {
+        "message": "Processing...",
+        "description": "Tooltip for the state icon: question is currently being sent to Gemini."
+    },
+    "iconSuccess": {
+        "message": "Processed successfully",
+        "description": "Tooltip for the state icon: an answer was generated and filled in."
+    },
+    "iconFailure": {
+        "message": "Failed to process",
+        "description": "Tooltip for the state icon: processing failed after retries."
+    },
+    "iconSkipped": {
+        "message": "Skipped",
+        "description": "Tooltip for the state icon: question was intentionally skipped (personal question or file upload)."
+    },
+    "iconPrefilled": {
+        "message": "Already answered on the form",
+        "description": "Tooltip for the state icon: the question already had an answer on the form itself."
+    },
+    "reprocessButton": {
+        "message": "Reprocess",
+        "description": "Button next to an already-answered question, forcing it through Gemini anyway."
+    },
+    "retryButton": {
+        "message": "Retry",
+        "description": "Button on the rate-limit banner, enabled once the countdown reaches zero."
+    },
+    "rateLimitCountdown": {
+        "message": "Rate limit reached. Resuming in $SECONDS$s…",
+        "description": "Countdown shown on the rate-limit banner while waiting to retry.",
+        "placeholders": {
+            "seconds": {
+                "content": "$1",
+                "example": "30"
+            }
+        }
+    },
+    "rateLimitLifted": {
+        "message": "Rate limit lifted. Ready to resume.",
+        "description": "Shown on the rate-limit banner once the countdown finishes."
+    },
+    "processButtonDefault": {
+        "message": "Process",
+        "description": "Default label of the main button injected above the form."
+    },
+    "processButtonWorking": {
+        "message": "Processing…",
+        "description": "Label of the main button while questions are being processed."
+    },
+    "processButtonRateLimited": {
+        "message": "Rate limited…",
+        "description": "Label of the main button while waiting out a rate limit."
+    },
+    "processButtonReload": {
+        "message": "Reload page ↺",
+        "description": "Label of the main button after the extension context was lost (e.g. the extension was updated)."
+    },
+    "alertQuotaExhausted": {
+        "message": "Gemini API quota exhausted.\n\nYou have reached your daily or per-minute request limit. Please wait before trying again or check your API quota in Google AI Studio.",
+        "description": "Toast shown when the Gemini API reports the quota is fully exhausted."
+    },
+    "alertNotConfigured": {
+        "message": "Gemini Form Filler is not configured.\n\nPlease open the extension popup, enter your API key and select a model.",
+        "description": "Toast shown when Process is clicked without a saved API key or model."
+    }
+}
