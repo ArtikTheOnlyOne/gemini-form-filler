@@ -14,12 +14,12 @@
     };
 
     const ICONS = {
-        pending: chrome.runtime.getURL("states/pending.svg"),
-        processing: chrome.runtime.getURL("states/processing.svg"),
-        success: chrome.runtime.getURL("states/success.svg"),
-        failure: chrome.runtime.getURL("states/failure.svg"),
-        skipped: chrome.runtime.getURL("states/skipped.svg"),
-        prefilled: chrome.runtime.getURL("states/prefilled.svg"),
+        pending: chrome.runtime.getURL("states/gff-pending.svg"),
+        processing: chrome.runtime.getURL("states/gff-processing.svg"),
+        success: chrome.runtime.getURL("states/gff-success.svg"),
+        failure: chrome.runtime.getURL("states/gff-failure.svg"),
+        skipped: chrome.runtime.getURL("states/gff-skipped.svg"),
+        prefilled: chrome.runtime.getURL("states/gff-prefilled.svg"),
     };
 
     let isAlertVisible = false;
