@@ -129,6 +129,13 @@ We are grateful for your contributions to the open-source community.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE) — you're free to use, copy, modify, and distribute this code, including for commercial purposes, as long as the original copyright notice and license text are included with any copy you distribute.
+This project is licensed under the [Apache License 2.0](LICENSE) — you are free to use, copy, modify, and distribute this code, including for commercial purposes, as long as you preserve the copyright and license notices and clearly mark any changes you make to the code.
 
-If you'd like to republish this extension somewhere not listed above, please [start a discussion](https://docs.github.com/en/discussions/collaborating-with-your-community-using-discussions/participating-in-a-discussion) first — MIT permits it, but we'd appreciate the heads-up.
+*"Gemini" and the Gemini logo are trademarks of Google LLC. This project is not affiliated with, endorsed by, or sponsored by Google in any way.*
+
+> [!CAUTION]
+> If you would like to republish this extension somewhere not listed above, please [start a discussion](https://docs.github.com/en/discussions/collaborating-with-your-community-using-discussions/participating-in-a-discussion) first. The license does not permit the use of the "Gemini Form Filler" name or logo outside of this project. Violation of the said license is subject to applicable law.
+
+---
+
+If you find this extension useful, consider leaving a review in the store you installed it from, or starring the repository — it genuinely helps others find it.
