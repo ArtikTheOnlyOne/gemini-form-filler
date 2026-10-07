@@ -1,0 +1,11 @@
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Talk about anything related to Gemini Form Filler. Please keep the conversation friendly and on topic.
+    - type: textarea
+      id: topic
+      attributes:
+          label: What would you like to discuss?
+      validations:
+          required: true

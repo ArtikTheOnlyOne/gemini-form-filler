@@ -1,0 +1,22 @@
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Please check the README first, the answer may already be there.
+
+              **Never post your Gemini API key.**
+    - type: textarea
+      id: question
+      attributes:
+          label: Your question
+      validations:
+          required: true
+    - type: textarea
+      id: tried
+      attributes:
+          label: What have you already tried?
+    - type: input
+      id: environment
+      attributes:
+          label: Browser and extension version
+          description: "Optional, but it helps if something does not work."

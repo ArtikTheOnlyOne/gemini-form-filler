@@ -1,0 +1,35 @@
+name: Translation issue
+description: "Report a mistake or a missing string in an existing translation"
+title: "[Translation]: "
+labels: ["translation"]
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Found a typo or a wrong translation? Thank you! You are welcome to fix it yourself with a pull request, or describe the issue here and let us handle it.
+
+              Would you like to add a whole new language? That is done with a pull request as well, the steps are in the same guide.
+    - type: input
+      id: language
+      attributes:
+          label: Language
+          placeholder: "For example: Ukrainian"
+      validations:
+          required: true
+    - type: input
+      id: key
+      attributes:
+          label: Message key
+          description: "The key from the messages.json file of that language, if you know it."
+    - type: textarea
+      id: current
+      attributes:
+          label: Current text
+          description: "What the extension shows now, and where you see it."
+      validations:
+          required: true
+    - type: textarea
+      id: suggested
+      attributes:
+          label: Suggested text
+          description: "How it should read instead."
