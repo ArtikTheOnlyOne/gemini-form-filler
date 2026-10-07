@@ -72,12 +72,12 @@ Before using the extension, you need a Google Gemini API key.
 
 | Icon | Status | Meaning |
 |:----:|--------|---------|
-| ![Pending state icon](states/gff-pending.svg) | **Pending** | Waiting to be processed |
-| ![Processing state icon](states/gff-processing.svg) | **Processing** | Currently being processed by Gemini |
-| ![Success state icon](states/gff-success.svg) | **Success** | Answer generated and filled in successfully |
-| ![Failure state icon](states/gff-failure.svg) | **Failure** | Could not generate an answer after all retry attempts |
-| ![Skipped state icon](states/gff-skipped.svg) | **Skipped** | Question was intentionally skipped |
-| ![Prefilled state icon](states/gff-prefilled.svg) | **Prefilled** | Question already contains an answer |
+| ![Pending state icon](../states/gff-pending.svg) | **Pending** | Waiting to be processed |
+| ![Processing state icon](../states/gff-processing.svg) | **Processing** | Currently being processed by Gemini |
+| ![Success state icon](../states/gff-success.svg) | **Success** | Answer generated and filled in successfully |
+| ![Failure state icon](../states/gff-failure.svg) | **Failure** | Could not generate an answer after all retry attempts |
+| ![Skipped state icon](../states/gff-skipped.svg) | **Skipped** | Question was intentionally skipped |
+| ![Prefilled state icon](../states/gff-prefilled.svg) | **Prefilled** | Question already contains an answer |
 
 Questions are skipped in three cases:
 - The question is **personal** (name, email, opinion, personal experience) — Gemini cannot answer on your behalf
@@ -116,10 +116,10 @@ This extension is available in multiple languages via Chromium's built-in `chrom
 
 You can and are welcome to translate this extension to the language of your choice if it is not yet supported. To do this:
 1. [Fork](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/fork-a-repo) this repository
-2. Create a copy of the [English version folder](_locales/en/) inside the [locales](_locales/) folder
+2. Create a copy of the [English version folder](../_locales/en/) inside the [locales](../_locales/) folder
 3. Rename it to the **appropriate code** from [Chrome's list of supported locales](https://developer.chrome.com/docs/extensions/reference/api/i18n#locales)
-4. Open the [messages file](_locales/en/messages.json) of the newly created folder
-5. Translate the contents of all **message** keys while preserving other content, including placeholders
+4. Open the [messages file](../_locales/en/messages.json) of the newly created folder
+5. Translate the contents of all `message` keys while preserving other content, including placeholders
 6. Update the languages list above
 7. Open a [pull request](https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/creating-a-pull-request-from-a-fork) and wait for review
 
@@ -129,7 +129,7 @@ We are grateful for your contributions to the open-source community.
 
 ## License
 
-This project is licensed under the [Apache License 2.0](LICENSE) — you are free to use, copy, modify, and distribute this code, including for commercial purposes, as long as you preserve the copyright and license notices and clearly mark any changes you make to the code.
+This project is licensed under the [Apache License 2.0](../LICENSE) — you are free to use, copy, modify, and distribute this code, including for commercial purposes, as long as you preserve the copyright and license notices and clearly mark any changes you make to the code.
 
 *"Gemini" and the Gemini logo are trademarks of Google LLC. This project is not affiliated with, endorsed by, or sponsored by Google in any way.*
 

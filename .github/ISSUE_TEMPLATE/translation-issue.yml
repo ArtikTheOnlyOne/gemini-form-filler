@@ -6,9 +6,9 @@ body:
     - type: markdown
       attributes:
           value: |
-              Found a typo or a wrong translation? Thank you! You are welcome to fix it yourself with a pull request, or describe the issue here and let us handle it.
+              Found a typo or a wrong translation? Thank you! You are welcome to fix it yourself with a [pull request](https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/creating-a-pull-request-from-a-fork), or describe the issue here and let us handle it.
 
-              Would you like to add a whole new language? That is done with a pull request as well, the steps are in the same guide.
+              Would you like to add a whole new language? That is done with a [pull request](https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/creating-a-pull-request-from-a-fork) as well, please see the [contributing guide](https://github.com/ArtikTheOnlyOne/gemini-form-filler/blob/main/docs/CONTRIBUTING.md).
     - type: input
       id: language
       attributes:
