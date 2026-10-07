@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+    - name: Questions and ideas
+      url: "https://github.com/ArtikTheOnlyOne/gemini-form-filler/discussions"
+      about: "Ask a question or share an idea in Discussions instead of opening an issue"
+    - name: Request publication in another store
+      url: "https://github.com/ArtikTheOnlyOne/gemini-form-filler/discussions/new?category=publication-requests"
+      about: "Please do not publish the extension yourself, ask for an official publication first"
+    - name: Report a security vulnerability
+      url: "https://github.com/ArtikTheOnlyOne/gemini-form-filler/security/policy"
+      about: "Please do not disclose vulnerabilities publicly, follow the security policy instead"

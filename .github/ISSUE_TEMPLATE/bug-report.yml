@@ -1,0 +1,110 @@
+name: Bug report
+description: "Something does not work as expected"
+title: "[Bug]: "
+labels: ["bug"]
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Thank you for taking the time to report a bug.
+
+              **Never paste your Gemini API key here.** It can appear in logs, screenshots and network captures, so remove it from anything you post or attach.
+    - type: textarea
+      id: what-happened
+      attributes:
+          label: What happened?
+          description: "Describe the problem and what you expected to happen instead."
+      validations:
+          required: true
+    - type: textarea
+      id: steps
+      attributes:
+          label: Steps to reproduce
+          placeholder: |
+              1. Open a Google Form that contains ...
+              2. Click Process
+              3. ...
+      validations:
+          required: true
+    - type: dropdown
+      id: question-types
+      attributes:
+          label: Affected question types
+          description: "Select all that apply."
+          multiple: true
+          options:
+              - Short answer
+              - Paragraph
+              - Multiple choice
+              - Checkboxes
+              - Dropdown
+              - Linear scale
+              - Rating
+              - Radio grid
+              - Checkbox grid
+              - Date
+              - Time
+              - Not related to a question type
+    - type: dropdown
+      id: browser
+      attributes:
+          label: Browser
+          options:
+              - Google Chrome
+              - Microsoft Edge
+              - Opera
+              - Opera GX
+              - Brave
+              - Other Chromium-based browser
+      validations:
+          required: true
+    - type: input
+      id: browser-version
+      attributes:
+          label: Browser version
+          description: "You can find it on the About page of your browser."
+      validations:
+          required: true
+    - type: input
+      id: extension-version
+      attributes:
+          label: Extension version
+          description: "You can find it on the extensions page of your browser."
+      validations:
+          required: true
+    - type: dropdown
+      id: installed-from
+      attributes:
+          label: Installed from
+          options:
+              - Chrome Web Store
+              - Microsoft Edge Add-ons
+              - Opera add-ons
+              - GitHub release or source code
+      validations:
+          required: true
+    - type: input
+      id: model
+      attributes:
+          label: Gemini model
+          description: "The model selected in the extension popup."
+    - type: textarea
+      id: console
+      attributes:
+          label: Console output
+          description: "Open DevTools on the form page (F12) and paste the errors from the Console. Messages from the extension start with [GFF]."
+          render: shell
+    - type: textarea
+      id: screenshots
+      attributes:
+          label: Screenshots
+          description: "Drag and drop images here if they help."
+    - type: checkboxes
+      id: checks
+      attributes:
+          label: Before submitting
+          options:
+              - label: I searched the existing issues and found no duplicate
+                required: true
+              - label: I removed my API key from everything I posted
+                required: true

@@ -1,0 +1,29 @@
+title: "Publication request: "
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Gemini Form Filler can be published in other extension stores on request (Chromium-based browsers only). Please do not publish it yourself and wait for an official publication, see the [License](https://github.com/ArtikTheOnlyOne/gemini-form-filler#license) section of the README.
+    - type: input
+      id: store
+      attributes:
+          label: Store name
+      validations:
+          required: true
+    - type: input
+      id: store-link
+      attributes:
+          label: Store link
+          description: "A link to the store or its developer page, if you have one."
+    - type: checkboxes
+      id: confirmation
+      attributes:
+          label: Confirmation
+          options:
+              - label: The store accepts extensions for Chromium-based browsers
+                required: true
+    - type: textarea
+      id: reason
+      attributes:
+          label: Why would it be useful?
+          description: "For example, who uses this store and why it matters to them."

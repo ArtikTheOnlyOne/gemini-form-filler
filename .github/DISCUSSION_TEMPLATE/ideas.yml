@@ -1,0 +1,15 @@
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Share an early-stage idea or brainstorm here. If your request is concrete and well defined, please open a Feature request issue instead.
+    - type: textarea
+      id: idea
+      attributes:
+          label: Your idea
+      validations:
+          required: true
+    - type: textarea
+      id: problem
+      attributes:
+          label: What problem would it solve?
