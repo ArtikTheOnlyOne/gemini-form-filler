@@ -92,7 +92,7 @@ Text: ${title}${optionsBlock}`;
 }
 
 async function callGemini(prompt, config, image = null) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${config.model}:generateContent?key=${config.apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${config.model}:generateContent`;
 
     const parts = [];
 
@@ -111,7 +111,7 @@ async function callGemini(prompt, config, image = null) {
 
     const response = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-goog-api-key": config.apiKey },
         body: JSON.stringify(body),
     });
 
@@ -206,9 +206,9 @@ async function processQuestion(question) {
 const STABLE_MODEL_PATTERN = /^gemini-\d+(?:\.\d+)?-(?:flash|pro)(?:-(?:lite|8b))?$/;
 
 async function fetchAvailableModels(apiKey) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}&pageSize=100`;
+    const url = "https://generativelanguage.googleapis.com/v1beta/models?pageSize=100";
 
-    const response = await fetch(url);
+    const response = await fetch(url, { headers: { "x-goog-api-key": apiKey } });
 
     if (!response.ok) {
         const err = await response.json().catch(() => ({}));
