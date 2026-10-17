@@ -12,4 +12,4 @@
 - [ ] I reloaded the extension and tested the change on a Google Form
 - [ ] The code follows the project style: 4 spaces, double quotes, minimal comments
 
-<!-- Adding a new language? Add &template=new_language.md to the address of this page and reload it to switch to the language template. -->
+<!-- Adding a new language? Add &template=new-language.md to the address of this page and reload it to switch to the language template. -->

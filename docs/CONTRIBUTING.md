@@ -14,11 +14,11 @@ Please search the existing [issues](https://github.com/ArtikTheOnlyOne/gemini-fo
 The extension uses the browser's built-in `chrome.i18n` API, so a new language is one folder with one JSON file.
 
 1. [Fork](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/fork-a-repo) this repository
-2. Create a copy of the [English version folder](../_locales/en/) inside the [locales](../_locales/) folder
+2. Create a copy of the [English version folder](/_locales/en/) inside the [locales](/_locales/) folder
 3. Rename it to the **appropriate code** from [Chrome's list of supported locales](https://developer.chrome.com/docs/extensions/reference/api/i18n#locales)
-4. Open the [messages file](../_locales/en/messages.json) of the newly created folder
+4. Open the [messages file](/_locales/en/messages.json) of the newly created folder
 5. Translate the contents of all `message` keys while preserving other content, including placeholders
-6. Add the language to the list in the [README](../README.md#locales)
+6. Add the language to the list in the [README](/docs/README.md#locales)
 7. Push your changes and open a pull request
 
 If you can, check how the translation looks by switching your browser's display language to the new one.
@@ -48,4 +48,4 @@ The repository uses squash merging, so the pull request title becomes the commit
 
 ## License
 
-By contributing, you agree that your contribution is licensed under the [Apache License 2.0](../LICENSE), as described in section 5 of the license.
+By contributing, you agree that your contribution is licensed under the [Apache License 2.0](/LICENSE), as described in section 5 of the license.
