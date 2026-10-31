@@ -14,7 +14,7 @@ Gemini Form Filler is a browser extension that uses the Google Gemini API to aut
 ## Data the extension accesses
 
 **Google Form content**
-The extension reads the content of Google Forms pages you open — question text, answer options, and images attached to questions. This data is used solely to construct requests to the Gemini API and is never stored or transmitted anywhere else.
+The extension reads the content of Google Forms pages you open: question text, answer options, and images attached to questions. This data is used solely to construct requests to the Gemini API and is never stored or transmitted anywhere else.
 
 **Gemini API key**
 Your API key is stored locally in your browser using `chrome.storage.local`. It is only transmitted to Google's Gemini API endpoint (`generativelanguage.googleapis.com`) to authenticate requests. It is never sent to any other server and never leaves your device for any other purpose.

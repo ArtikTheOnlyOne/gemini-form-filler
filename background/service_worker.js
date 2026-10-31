@@ -40,10 +40,10 @@ function buildPrompt(question) {
     return `You are an assistant that answers Google Form questions with factual, objectively correct answers.
 
 LANGUAGE RULE:
-Respond in the same language as the question text. If the question is in Ukrainian — answer in Ukrainian. If in English — answer in English. And so on.
+Respond in the same language as the question text. If the question is in Ukrainian, answer in Ukrainian. If in English, answer in English. And so on.
 
 SKIP RULE:
-If the question is personal (asks for name, surname, email, phone, personal opinion, personal experience, preferences, or any information unique to a specific person), OR if there is no single objectively correct answer — respond with exactly:
+If the question is personal (asks for name, surname, email, phone, personal opinion, personal experience, preferences, or any information unique to a specific person), OR if there is no single objectively correct answer, respond with exactly:
 {"answer": "${SKIP_KEYWORD}"}
 
 RESPONSE FORMAT:
