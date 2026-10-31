@@ -1,6 +1,6 @@
-# Gemini Form Filler
+# Forms in a Flash. Submit to efficiency.
 
-A browser extension for Chromium-based browsers (Chrome, Edge, Opera, etc.) that automatically fills Google Forms using the Google Gemini AI.
+Gemini Form Filler is an extension for Firefox and Chromium-based browsers (Chrome, Edge, Opera, etc.) that automatically fills Google Forms using the Google Gemini AI.
 
 > [!WARNING]
 > This extension uses an AI model to generate answers. AI makes mistakes — answers may be incorrect, incomplete, or inappropriate. Always review filled answers before submitting. The author takes no responsibility for the results of form submissions made using this extension.
@@ -10,24 +10,26 @@ A browser extension for Chromium-based browsers (Chrome, Edge, Opera, etc.) that
 ## Installation
 
 The extension is available for download from:
+- [Firefox Browser Add-ons](https://addons.mozilla.org/firefox/addon/gemini-form-filler/)
 - [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/gemini-form-filler/jkbdobafeneimelhcjcamkhmpnlkdmha/)
 - [Chrome Web Store](https://chromewebstore.google.com/detail/gemini-form-filler/njegmkogepejmpdpobokahnaogepgdbi/)
 - [Opera add-ons](https://addons.opera.com/extensions/details/gemini-form-filler/) (review in progress)
 
-Publication in other extension stores is available on request (Chromium-based browsers only).
+Publication in other extension stores is available on request.
 
 You can also use it unpacked:
 1. Download or clone this repository
 2. Open your browser and navigate to the extensions page:
+   - Firefox: `about:debugging#/runtime/this-firefox`
    - Chrome / Opera: `chrome://extensions`
    - Edge: `edge://extensions`
    - Other Chromium-based browsers: most probably one of the above, but may differ
-3. Enable **Developer mode**
-4. Click **Load unpacked** and select the repository folder
+3. Enable **Developer mode** (not needed in Firefox)
+4. Click **Load unpacked** and select the repository folder (in Firefox: Load Temporary Add-on, select `manifest.json`)
 5. The extension icon will appear in your browser toolbar
 
 > [!TIP]
-> It is recommended to use extension stores instead of the source code for a better experience — including stable builds and automatic updates.
+> It is recommended to use extension stores instead of the source code for a better experience — including stable builds and automatic updates. In Firefox this matters even more: an extension loaded from source is temporary and disappears when the browser is closed.
 
 ---
 
@@ -112,7 +114,7 @@ File upload questions are the one exception — they require a real file from yo
 
 ## Locales
 
-This extension is available in multiple languages via Chromium's built-in `chrome.i18n` API. Currently supported: **English**, **Ukrainian**.
+This extension is available in multiple languages via the browser's built-in `i18n` API. Currently supported: **English**, **Ukrainian**.
 
 You can and are welcome to translate this extension to the language of your choice if it is not yet supported. To do this:
 1. [Fork](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/fork-a-repo) this repository

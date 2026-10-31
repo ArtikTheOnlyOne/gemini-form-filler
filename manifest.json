@@ -3,9 +3,26 @@
     "name": "Gemini Form Filler",
     "short_name": "GFF",
     "version": "1.3.3.7",
+    "version_name": "source-code",
     "description": "__MSG_description__",
     "default_locale": "en",
     "homepage_url": "https://github.com/ArtikTheOnlyOne/gemini-form-filler/",
+    "minimum_chrome_version": "121",
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "gemini-form-filler@artiktheonlyone.github.io",
+            "strict_min_version": "140.0",
+            "data_collection_permissions": {
+                "required": [
+                    "websiteContent",
+                    "authenticationInfo"
+                ]
+            }
+        },
+        "gecko_android": {
+            "strict_min_version": "142.0"
+        }
+    },
     "permissions": [
         "storage"
     ],
@@ -16,6 +33,9 @@
     ],
     "background": {
         "service_worker": "background/service_worker.js",
+        "scripts": [
+            "background/service_worker.js"
+        ],
         "type": "module"
     },
     "content_scripts": [

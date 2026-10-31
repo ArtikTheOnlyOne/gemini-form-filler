@@ -50,12 +50,15 @@ body:
       attributes:
           label: Browser
           options:
+              - Mozilla Firefox
+              - Firefox for Android
               - Google Chrome
               - Microsoft Edge
               - Opera
               - Opera GX
               - Brave
-              - Other Chromium-based browser
+              - Tor
+              - Other Chromium-based or Mozilla-based browser
       validations:
           required: true
     - type: input
@@ -77,9 +80,10 @@ body:
       attributes:
           label: Installed from
           options:
+              - Firefox Browser Add-ons
               - Chrome Web Store
               - Microsoft Edge Add-ons
-              - Opera add-ons
+              - Opera addons
               - GitHub release or source code
       validations:
           required: true

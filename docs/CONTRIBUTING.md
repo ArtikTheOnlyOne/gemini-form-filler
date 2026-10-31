@@ -28,7 +28,7 @@ If you can, check how the translation looks by switching your browser's display 
 There is no build step, the repository is the extension.
 
 1. Fork and clone the repository
-2. Open the extensions page of your browser (`chrome://extensions`, `edge://extensions` or other), enable **Developer mode**, click **Load unpacked** and select the repository folder
+2. Open the extensions page of your browser (`about:debugging#/runtime/this-firefox`, `chrome://extensions`, `edge://extensions` or other), enable **Developer mode** (not needed in Firefox), click **Load unpacked** (in Firefox: Load Temporary Add-on) and select the repository folder (in Firefox: select `manifest.json`)
 3. After changing the code, reload the extension on the extensions page and refresh the Google Form tab
 4. Test the change on a form that contains the affected question types
 

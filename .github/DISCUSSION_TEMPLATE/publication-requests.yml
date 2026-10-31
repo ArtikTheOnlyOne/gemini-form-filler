@@ -3,7 +3,7 @@ body:
     - type: markdown
       attributes:
           value: |
-              Gemini Form Filler can be published in other extension stores on request (Chromium-based browsers only). Please do not publish it yourself and wait for an official publication, see the [License](https://github.com/ArtikTheOnlyOne/gemini-form-filler#license) section of the README.
+              Gemini Form Filler can be published in other extension stores on request. Please do not publish it yourself and wait for an official publication, see the [License](https://github.com/ArtikTheOnlyOne/gemini-form-filler#license) section of the README.
     - type: input
       id: store
       attributes:
@@ -20,7 +20,7 @@ body:
       attributes:
           label: Confirmation
           options:
-              - label: The store accepts extensions for Chromium-based browsers
+              - label: The store accepts extensions for Firefox or Chromium-based browsers
                 required: true
     - type: textarea
       id: reason
